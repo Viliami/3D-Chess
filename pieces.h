@@ -18,6 +18,13 @@
 #define G 6
 #define H 7
 
+#define BLACK 1337
+#define WHITE 6969
+
+enum GAMESTATE : int{
+    MENU,WHITE_TURN,BLACK_TURN,WHITE_WIN,BLACK_WIN,TIE
+};
+
 class Piece{
 
     public:
@@ -29,6 +36,7 @@ class Piece{
         unsigned int textureNumber;
         float var_swag;
 	    bool picked = false;
+        int color;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){
