@@ -5,6 +5,8 @@ float angle = 0.0f;
 GLuint p,f,v,tile;
 int grid_row, grid_col;
 char grid_column;
+int highlighted_tiles[28][2] = {0};
+GAMESTATE gamestate;
 
 void initDLs(void){
     printf("%i\n",A);
@@ -20,25 +22,63 @@ void initDLs(void){
 }
 
 void drawGrid(void){
-    glColor4f(1,1,1,0.5);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glColor4f(1,1,1,0.3);
     int counter = 0;
     for(int i = 0; i <= 7; i++){
         for(int j = 0; j <= 7; j++){
             counter++;
             glLoadName(100+counter);
             glPushMatrix();
-            if(i+1 == grid_col && j+1 == grid_row){
-                glColor4f(1,1,1,1);
+            /*if(i+1 == grid_col && j+1 == grid_row){
+                glColor4f(1,0,0,0.3);
                 glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
                 glCallList(tile);
-                glColor4f(1,1,1,0.5);
-            }else{
-                glTranslatef(-7+(i*2),-1,(-7+(j*2)));
-                glCallList(tile);
-            }
+                glColor4f(1,1,1,0.3);
+            }else{*/
+                bool success = false;
+                for(int k = 0; k < 28; k++){
+                    if(highlighted_tiles[k] != 0){
+                        if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
+                            printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
+                            glColor4f(1,0.1,0.1,0.3);
+                            glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
+                            glCallList(tile);
+                            glColor4f(1,0,0,1);
+                            glBegin(GL_LINES);
+                                glVertex3f(1,0,1);
+                                glVertex3f(0.4,0,1);
+                                glVertex3f(1,0,-0.9);
+                                glVertex3f(0.4,0,-0.9);
+                                glVertex3f(-1,0,1);
+                                glVertex3f(-0.4,0,1);
+                                glVertex3f(-1,0,-0.9);
+                                glVertex3f(-0.4,0,-0.9);
+                                glVertex3f(-0.9,0,1);
+                                glVertex3f(-0.9,0,0.4);
+                                glVertex3f(-0.9,0,-1);
+                                glVertex3f(-0.9,0,-0.4);
+                                glVertex3f(0.9,0,1);
+                                glVertex3f(0.9,0,0.4);
+                                glVertex3f(0.9,0,-1);
+                                glVertex3f(0.9,0,-0.4);
+                            glEnd();
+                            success = true;
+                            break;
+                        }
+                    }
+                }
+                if(!success){
+                    glTranslatef(-7+(i*2),-1,(-7+(j*2)));
+                    glCallList(tile);
+                }
+            //}
             glPopMatrix();
         }
     }
+    glEnable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 }
 
 void setShaders(void){
@@ -137,17 +177,22 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
         }
     }
     c_Column = col;
+    if(row == 1 || row == 2){
+        color = WHITE;
+    }else if(row == 7 || row == 8){
+        color = BLACK;
+    }else{
+        color = -1;
+    }
 }
 
 void Piece::draw(){
     glPushMatrix();
-    //glRotatef(angle,0,1,0);
-    //glTranslatef(0,1,0);
     float x = 0.0f;
     float y = 0.0f;
     float z = 0.0f;
     if(picked){
-        y = 2.0f;
+        //y = 2.0f;
     }
     switch(c_Column){
         case 'a':
@@ -235,7 +280,7 @@ void Knight::draw(){
     float y = 0.0f;
     float z = 0.0f;
     if(picked){
-        y = 2.0f;
+        //y = 2.0f;
     }
     switch(c_Column){
         case 'a':
@@ -313,16 +358,35 @@ void Knight::draw(){
 
 void Piece::pick(void){
     picked = true;
+    listMoves();
+    grid_row = c_Row;
+    grid_col = c_Col;
+    grid_column = c_Column;
+    printf("selected row = %i col = %i\n",grid_row,grid_col,grid_column);
 }
 
 void Piece::unpick(void){
     picked = false;
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    //grid_row = 0;
+    //grid_col = 0;
 }
 
 int* Piece::listMoves(void){
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
 }
 
 int* Pawn::listMoves(void){
-    int swag[2] = {0,0};
-    return swag;
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    if(color == BLACK){
+        highlighted_tiles[0][0] = c_Row-1;
+        highlighted_tiles[0][1] = c_Col;
+        highlighted_tiles[1][0] = c_Row-2;
+        highlighted_tiles[1][1] = c_Col;
+    }else if(color == WHITE){
+        highlighted_tiles[0][0] = c_Row+1;
+        highlighted_tiles[0][1] = c_Col;
+        highlighted_tiles[1][0] = c_Row+2;
+        highlighted_tiles[1][1] = c_Col;
+    }
 }
