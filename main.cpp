@@ -268,7 +268,7 @@ void swap_turns(void){
 }
 
 void checkPossibleMoves(){
-    if(selected_piece != NULL){
+    /*if(selected_piece != NULL){
         printf("Color = %i\nRow = %i Col = %i\n",selected_piece->color,grid_row,grid_col);
         for(int i = 0; i < sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]); i++){
             printf("i = %i [0] = %i [1] = %i\n",i,highlighted_tiles[i][0],highlighted_tiles[i][1]);
@@ -287,7 +287,7 @@ void checkPossibleMoves(){
                 break;
             }
         }
-    }
+    }*/
 }
 
 void list_hits(GLint hits, GLuint *names){
@@ -295,9 +295,10 @@ void list_hits(GLint hits, GLuint *names){
     for(int i = 0; i <= pieces.size()-1; i++){
         pieces.at(i)->unpick();
     }
+    bool move_pressed = false;
     for (int i = 0; i < hits; i++){
         int name = (GLubyte)names[i*4+3];
-        //printf("Name on stack: %d\n", name);
+        printf("Name on stack: %d\n", name);
         switch(gamestate){
             case WHITE_TURN:
                 switch(name){
@@ -468,6 +469,15 @@ void list_hits(GLint hits, GLuint *names){
                 }
                 break;
         }
+        if((GLubyte)names[i*4+3] == 164){
+            move_pressed = true;
+            /*printf("Clicked on possible move\ncol = %i row = %i\n",grid_col,grid_row);
+            selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
+            swap_turns();
+            memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+            selected_piece->unpick();*/
+            break;
+        }
         if(name >= 101){
             name -= 100;
             grid_row = 9-(name%8);
@@ -532,6 +542,13 @@ void list_hits(GLint hits, GLuint *names){
                 grid_col = 8;
             }
         }
+    }
+    if(move_pressed){
+        printf("Clicked on possible move\ncol = %i row = %i\n",grid_col,grid_row);
+        selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
+        swap_turns();
+        memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+        selected_piece->unpick();
     }
     printf("position = %c%i\n",grid_column,grid_row);
     pickPiece(grid_col,grid_row);
