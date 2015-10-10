@@ -11,7 +11,7 @@ int screen_width = 600, screen_height = 600;
 extern int grid_row, grid_col;
 extern char grid_column;
 extern GAMESTATE gamestate;
-//extern int highlighted_tiles[28][2];
+extern int highlighted_tiles[28][2];
 
 King* white_king;
 King* black_king;
@@ -259,28 +259,45 @@ void pickPiece(int col, int row){
     }
 }
 
+void swap_turns(void){
+    if(gamestate == WHITE_TURN){
+        gamestate = BLACK_TURN;
+    }else if(gamestate == BLACK_TURN){
+        gamestate = WHITE_TURN;
+    }
+}
+
 void checkPossibleMoves(){
     if(selected_piece != NULL){
+        printf("Color = %i\nRow = %i Col = %i\n",selected_piece->color,grid_row,grid_col);
         for(int i = 0; i < sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]); i++){
-            printf("i = %i\n",i);
+            printf("i = %i [0] = %i [1] = %i\n",i,highlighted_tiles[i][0],highlighted_tiles[i][1]);
             if(highlighted_tiles[i][0] > 0){
                 if(highlighted_tiles[i][0] == grid_row && highlighted_tiles[i][1] == grid_col){
                     printf("clicked on possible tile\n");
+                    selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
+                    selected_piece->unpick();
+                    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2);
+                    swap_turns();
+                    break;
+                }else{
+                    printf("has not clicked on this possible tile\n");
                 }
-                printf("has not clicked on this possible tile\n");
+            }else{
+                break;
             }
         }
     }
 }
 
 void list_hits(GLint hits, GLuint *names){
-    printf("%d hits:\n", hits);
+    //printf("%d hits:\n", hits);
     for(int i = 0; i <= pieces.size()-1; i++){
         pieces.at(i)->unpick();
     }
     for (int i = 0; i < hits; i++){
         int name = (GLubyte)names[i*4+3];
-        printf("Name on stack: %d\n", name);
+        //printf("Name on stack: %d\n", name);
         switch(gamestate){
             case WHITE_TURN:
                 switch(name){
@@ -456,61 +473,61 @@ void list_hits(GLint hits, GLuint *names){
             grid_row = 9-(name%8);
             switch(name%8){
                 case 0:
-                    printf("row = %i\n",1);
+                    //printf("row = %i\n",1);
                     grid_row = 1;
                     break;
                 case 7:
-                    printf("row = %i\n",2);
+                    //printf("row = %i\n",2);
                     break;
                 case 6:
-                    printf("row = %i\n",3);
+                    //printf("row = %i\n",3);
                     break;
                 case 5:
-                    printf("row = %i\n",4);
+                    //printf("row = %i\n",4);
                     break;
                 case 4:
-                    printf("row = %i\n",5);
+                    //printf("row = %i\n",5);
                     break;
                 case 3:
-                    printf("row = %i\n",6);
+                    //printf("row = %i\n",6);
                     break;
                 case 2:
-                    printf("row = %i\n",7);
+                    //printf("row = %i\n",7);
                     break;
                 case 1:
-                    printf("row = %i\n",8);
+                    //printf("row = %i\n",8);
                     break;
             }
             if(name <= 8){
-                printf("column = 'A'\n");
+                //printf("column = 'A'\n");
                 grid_column = 'A';
                 grid_col = 1;
             }else if(name <= 16){
-                printf("column = 'B'\n");
+                //printf("column = 'B'\n");
                 grid_column = 'B';
                 grid_col = 2;
             }else if(name <= 24){
-                printf("column = 'C'\n");
+                //printf("column = 'C'\n");
                 grid_column = 'C';
                 grid_col = 3;
             }else if(name <= 32){
-                printf("column = 'D'\n");
+                //printf("column = 'D'\n");
                 grid_column = 'D';
                 grid_col = 4;
             }else if(name <= 40){
-                printf("column = 'E'\n");
+                //printf("column = 'E'\n");
                 grid_column = 'E';
                 grid_col = 5;
             }else if(name <= 48){
-                printf("column = 'F'\n");
+                //printf("column = 'F'\n");
                 grid_column = 'F';
                 grid_col = 6;
             }else if(name <= 56){
-                printf("column = 'G'\n");
+                //printf("column = 'G'\n");
                 grid_column = 'G';
                 grid_col = 7;
             }else if(name <= 64){
-                printf("column = 'H'\n");
+                //printf("column = 'H'\n");
                 grid_column = 'H';
                 grid_col = 8;
             }
