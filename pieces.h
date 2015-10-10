@@ -89,6 +89,7 @@ class Knight : public Piece{
         };
         ~Knight();
         void draw();
+        void listMoves(void);
 };
 
 class Bishop : public Piece{
@@ -98,6 +99,7 @@ class Bishop : public Piece{
             value = 3;
         };
         ~Bishop();
+        void listMoves(void);
 };
 
 class Pawn : public Piece{
