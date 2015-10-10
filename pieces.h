@@ -25,7 +25,11 @@ enum GAMESTATE : int{
     MENU,WHITE_TURN,BLACK_TURN,WHITE_WIN,BLACK_WIN,TIE
 };
 
+
+/*#ifndef MY_GLOBALS_H
+#define MY_GLOBALS_H
 extern int highlighted_tiles[28][2];
+#endif*/
 
 class Piece{
     public:
@@ -45,8 +49,8 @@ class Piece{
 	    virtual void listMoves(void);
 	    void pick(void);
 	    void unpick(void);
-        void changePos(unsigned int col, unsigned int row);
-        void changePos(char col, unsigned int row);
+        void move(unsigned int col, unsigned int row);
+        void move(char col, unsigned int row);
 };
 
 class King : public Piece{
