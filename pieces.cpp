@@ -5,6 +5,7 @@ float angle = 0.0f;
 GLuint p,f,v,tile;
 int grid_row, grid_col;
 char grid_column;
+//int highlighted_tiles[28][2] = {0};
 int highlighted_tiles[28][2] = {0};
 GAMESTATE gamestate;
 
@@ -372,11 +373,11 @@ void Piece::unpick(void){
     //grid_col = 0;
 }
 
-int* Piece::listMoves(void){
+void Piece::listMoves(void){
     memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
 }
 
-int* Pawn::listMoves(void){
+void Pawn::listMoves(void){
     memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
     if(color == BLACK){
         highlighted_tiles[0][0] = c_Row-1;
@@ -389,4 +390,20 @@ int* Pawn::listMoves(void){
         highlighted_tiles[1][0] = c_Row+2;
         highlighted_tiles[1][1] = c_Col;
     }
+}
+
+void Piece::changePos(unsigned int col, unsigned int row){
+    c_Col = col;
+    c_Row = row;
+    c_Column = column[col-1];
+}
+
+void Piece::changePos(char col, unsigned int row){
+    for(unsigned int i = 0; i <= sizeof(column)/sizeof(char); i++){
+        if(tolower(column[i]) == tolower(col)){
+            c_Col = i+1;
+        }
+    }
+    c_Row = row;
+    c_Column = col;
 }
