@@ -25,8 +25,9 @@ enum GAMESTATE : int{
     MENU,WHITE_TURN,BLACK_TURN,WHITE_WIN,BLACK_WIN,TIE
 };
 
-class Piece{
+extern int highlighted_tiles[28][2];
 
+class Piece{
     public:
         char column[9] = {'a','b','c','d','e','f','g','h','z'};
         int c_Row, c_Col; //current row and current column
@@ -39,12 +40,13 @@ class Piece{
         int color;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
-        ~Piece(){
-        };
+        ~Piece(){};
         virtual void draw();
-	    virtual int* listMoves(void);
+	    virtual void listMoves(void);
 	    void pick(void);
 	    void unpick(void);
+        void changePos(unsigned int col, unsigned int row);
+        void changePos(char col, unsigned int row);
 };
 
 class King : public Piece{
@@ -101,5 +103,5 @@ class Pawn : public Piece{
             value = 1;
         };
         ~Pawn();
-        int* listMoves(void);
+        void listMoves(void);
 };
