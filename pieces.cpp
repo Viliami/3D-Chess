@@ -29,19 +29,20 @@ void drawGrid(void){
     int counter = 0;
     for(int i = 0; i <= 7; i++){
         for(int j = 0; j <= 7; j++){
-            counter++;
-            glLoadName(100+counter);
-            glPushMatrix();
+            
             /*if(i+1 == grid_col && j+1 == grid_row){
                 glColor4f(1,0,0,0.3);
                 glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
                 glCallList(tile);
                 glColor4f(1,1,1,0.3);
             }else{*/
-                bool success = false;
+                /*bool success = false;
                 for(int k = 0; k < 28; k++){
                     if(highlighted_tiles[k] != 0){
                         if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
+                            counter++;
+                            glLoadName(100+counter);
+                            glPushMatrix();
                             //printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
                             glColor4f(1,0.1,0.1,0);
                             glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
@@ -66,17 +67,60 @@ void drawGrid(void){
                                 glVertex3f(0.9,0,-0.4);
                             glEnd();
                             success = true;
+                            glPopMatrix();
                             break;
                         }
                     }
-                }
-                if(!success){
+                }*/
+                //if(!success){
+                    counter++;
+                    glLoadName(100+counter);
+                    glPushMatrix();
                     glColor4f(1,1,1,0);
                     glTranslatef(-7+(i*2),-0.97,(-7+(j*2)));
                     glCallList(tile);
-                }
+                    glPopMatrix();
+                //}
             //}
-            glPopMatrix();
+            //glPopMatrix();
+        }
+    }
+    for(int k = 0; k < 28; k++){
+        if(highlighted_tiles[k] != 0){
+            int row = highlighted_tiles[k][0]-1;
+            int col = highlighted_tiles[k][1]-1;
+            //if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
+            if(row > 0 && col > 0){
+                //counter++;
+                //glLoadName(100+counter);
+                glPushMatrix();
+                //printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
+                glColor4f(1,0,0,0.5);
+                glTranslatef(-7+(col*2),-0.96,-(-7+(row*2)));
+                glCallList(tile);
+                glColor4f(1,0,0,1);
+                glBegin(GL_LINES);
+                glVertex3f(1,0,1);
+                glVertex3f(0.4,0,1);
+                glVertex3f(1,0,-0.9);
+                glVertex3f(0.4,0,-0.9);
+                glVertex3f(-1,0,1);
+                glVertex3f(-0.4,0,1);
+                glVertex3f(-1,0,-0.9);
+                glVertex3f(-0.4,0,-0.9);
+                glVertex3f(-0.9,0,1);
+                glVertex3f(-0.9,0,0.4);
+                glVertex3f(-0.9,0,-1);
+                glVertex3f(-0.9,0,-0.4);
+                glVertex3f(0.9,0,1);
+                glVertex3f(0.9,0,0.4);
+                glVertex3f(0.9,0,-1);
+                glVertex3f(0.9,0,-0.4);
+                glEnd();
+                //success = true;
+                glPopMatrix();
+                //break;
+            }
         }
     }
     glEnable(GL_TEXTURE_2D);
@@ -370,8 +414,8 @@ void Piece::pick(void){
 void Piece::unpick(void){
     picked = false;
     //memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
-    grid_row = 0;
-    grid_col = 0;
+    //grid_row = 0;
+    //grid_col = 0;
 }
 
 void Piece::listMoves(void){
