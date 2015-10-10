@@ -90,7 +90,7 @@ void drawGrid(void){
             int row = highlighted_tiles[k][0]-1;
             int col = highlighted_tiles[k][1]-1;
             //if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
-            if(row > 0 && col > 0){
+            if(col >= 0 && col >= 0 && col <= 7 && col <= 7){
                 //counter++;
                 //glLoadName(100+counter);
                 glPushMatrix();
@@ -402,6 +402,13 @@ void Knight::draw(){
     angle+=1.0f;
 }
 
+void highlight_tile(int col, int row,unsigned int tile){
+    if(col <= 8 && row <= 8 && col > 0 && row > 0){
+        highlighted_tiles[tile][0] = row;
+        highlighted_tiles[tile][1] = col;
+    }
+}
+
 void Piece::pick(void){
     picked = true;
     listMoves();
@@ -425,16 +432,57 @@ void Piece::listMoves(void){
 void Pawn::listMoves(void){
     memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
     if(color == BLACK){
-        highlighted_tiles[0][0] = c_Row-1;
-        highlighted_tiles[0][1] = c_Col;
-        highlighted_tiles[1][0] = c_Row-2;
-        highlighted_tiles[1][1] = c_Col;
+            highlight_tile(c_Col,c_Row-1,0);
+            highlight_tile(c_Col,c_Row-2,1);
     }else if(color == WHITE){
-        highlighted_tiles[0][0] = c_Row+1;
-        highlighted_tiles[0][1] = c_Col;
-        highlighted_tiles[1][0] = c_Row+2;
-        highlighted_tiles[1][1] = c_Col;
+            highlight_tile(c_Col,c_Row+1,0);
+            highlight_tile(c_Col,c_Row+2,1);
     }
+}
+
+void Knight::listMoves(void){
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    highlight_tile(c_Col-1,c_Row+2,0);
+    highlight_tile(c_Col+1,c_Row+2,1);
+    highlight_tile(c_Col-1,c_Row-2,2);
+    highlight_tile(c_Col+1,c_Row-2,3);
+    highlight_tile(c_Col-2,c_Row+1,4);
+    highlight_tile(c_Col-2,c_Row-1,5);
+    highlight_tile(c_Col+2,c_Row+1,6);
+    highlight_tile(c_Col+2,c_Row-1,7);
+}
+
+void Bishop::listMoves(void){
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    highlight_tile(c_Col-1,c_Row+1,0);
+    highlight_tile(c_Col-1,c_Row-1,1);
+    highlight_tile(c_Col+1,c_Row+1,2);
+    highlight_tile(c_Col+1,c_Row-1,3);
+    highlight_tile(c_Col-2,c_Row+2,4);
+    highlight_tile(c_Col-2,c_Row-2,5);
+    highlight_tile(c_Col+2,c_Row+2,6);
+    highlight_tile(c_Col+2,c_Row-2,7);
+    highlight_tile(c_Col-3,c_Row+3,8);
+    highlight_tile(c_Col-3,c_Row-3,9);
+    highlight_tile(c_Col+3,c_Row+3,10);
+    highlight_tile(c_Col+3,c_Row-3,11);
+    highlight_tile(c_Col-4,c_Row+4,12);
+    highlight_tile(c_Col-4,c_Row-4,13);
+    highlight_tile(c_Col+4,c_Row+4,14);
+    highlight_tile(c_Col+4,c_Row-4,15);
+    highlight_tile(c_Col-5,c_Row+5,16);
+    highlight_tile(c_Col-5,c_Row-5,17);
+    highlight_tile(c_Col+5,c_Row+5,18);
+    highlight_tile(c_Col+5,c_Row-5,19);
+    highlight_tile(c_Col-6,c_Row+6,20);
+    highlight_tile(c_Col-6,c_Row-6,21);
+    highlight_tile(c_Col+6,c_Row+6,22);
+    highlight_tile(c_Col+6,c_Row-6,23);
+    highlight_tile(c_Col-7,c_Row+7,24);
+    highlight_tile(c_Col-7,c_Row-7,25);
+    highlight_tile(c_Col+7,c_Row+7,26);
+    highlight_tile(c_Col+7,c_Row-7,27);
+    
 }
 
 void Piece::move(unsigned int col, unsigned int row){
