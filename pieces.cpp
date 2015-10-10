@@ -25,7 +25,7 @@ void initDLs(void){
 void drawGrid(void){
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
-    glColor4f(1,1,1,0.3);
+    glColor4f(1,1,1,0);
     int counter = 0;
     for(int i = 0; i <= 7; i++){
         for(int j = 0; j <= 7; j++){
@@ -42,8 +42,8 @@ void drawGrid(void){
                 for(int k = 0; k < 28; k++){
                     if(highlighted_tiles[k] != 0){
                         if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
-                            printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
-                            glColor4f(1,0.1,0.1,0.3);
+                            //printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
+                            glColor4f(1,0.1,0.1,0);
                             glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
                             glCallList(tile);
                             glColor4f(1,0,0,1);
@@ -71,7 +71,8 @@ void drawGrid(void){
                     }
                 }
                 if(!success){
-                    glTranslatef(-7+(i*2),-1,(-7+(j*2)));
+                    glColor4f(1,1,1,0);
+                    glTranslatef(-7+(i*2),-0.97,(-7+(j*2)));
                     glCallList(tile);
                 }
             //}
@@ -363,14 +364,14 @@ void Piece::pick(void){
     grid_row = c_Row;
     grid_col = c_Col;
     grid_column = c_Column;
-    printf("selected row = %i col = %i\n",grid_row,grid_col,grid_column);
+    //printf("selected row = %i col = %i\n",grid_row,grid_col,grid_column);
 }
 
 void Piece::unpick(void){
     picked = false;
-    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
-    //grid_row = 0;
-    //grid_col = 0;
+    //memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    grid_row = 0;
+    grid_col = 0;
 }
 
 void Piece::listMoves(void){
@@ -392,13 +393,13 @@ void Pawn::listMoves(void){
     }
 }
 
-void Piece::changePos(unsigned int col, unsigned int row){
+void Piece::move(unsigned int col, unsigned int row){
     c_Col = col;
     c_Row = row;
     c_Column = column[col-1];
 }
 
-void Piece::changePos(char col, unsigned int row){
+void Piece::move(char col, unsigned int row){
     for(unsigned int i = 0; i <= sizeof(column)/sizeof(char); i++){
         if(tolower(column[i]) == tolower(col)){
             c_Col = i+1;
