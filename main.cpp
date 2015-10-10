@@ -11,6 +11,7 @@ int screen_width = 600, screen_height = 600;
 extern int grid_row, grid_col;
 extern char grid_column;
 extern GAMESTATE gamestate;
+//extern int highlighted_tiles[28][2];
 
 King* white_king;
 King* black_king;
@@ -45,6 +46,7 @@ Pawn* black_pawn_6;
 Pawn* black_pawn_7;
 Pawn* black_pawn_8;
 Piece* board;
+Piece* selected_piece = NULL;
 std::vector<Piece*> pieces;
 
 float y_level = 0.0f;
@@ -251,7 +253,22 @@ void pickPiece(int col, int row){
                 pieces.at(j)->unpick();
             }
             piece->pick();
+            selected_piece = piece;
             break;
+        }
+    }
+}
+
+void checkPossibleMoves(){
+    if(selected_piece != NULL){
+        for(int i = 0; i < sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]); i++){
+            printf("i = %i\n",i);
+            if(highlighted_tiles[i][0] > 0){
+                if(highlighted_tiles[i][0] == grid_row && highlighted_tiles[i][1] == grid_col){
+                    printf("clicked on possible tile\n");
+                }
+                printf("has not clicked on this possible tile\n");
+            }
         }
     }
 }
@@ -270,66 +287,82 @@ void list_hits(GLint hits, GLuint *names){
                     case WHITE_ROOK1:
                         printf("White rook 1\n");
                         white_rook_1->pick();
+                        selected_piece = white_rook_1;
                         break;
                     case WHITE_ROOK2:
                         printf("White rook 2\n");
                         white_rook_2->pick();
+                        selected_piece = white_rook_2;
                         break;
                     case WHITE_KNIGHT1:
                         printf("White knight 1\n");
                         white_knight_1->pick();
+                        selected_piece = white_knight_1;
                         break;
                     case WHITE_KNIGHT2:
                         printf("White knight 2\n");
                         white_knight_2->pick();
+                        selected_piece = white_knight_2;
                         break;
                     case WHITE_BISHOP1:
                         printf("White bishop 1\n");
                         white_bishop_1->pick();
+                        selected_piece = white_bishop_1;
                         break;
                     case WHITE_BISHOP2:
                         printf("White bishop 2\n");
                         white_bishop_2->pick();
+                        selected_piece = white_bishop_2;
                         break;
                     case WHITE_QUEEN:
                         printf("White queen\n");
                         white_queen->pick();
+                        selected_piece = white_queen;
                         break;
                     case WHITE_KING:
                         printf("White king\n");
                         white_king->pick();
+                        selected_piece = white_king;
                         break;
                     case WHITE_PAWN1:
                         printf("White pawn 1\n");
                         white_pawn_1->pick();
+                        selected_piece = white_pawn_1;
                         break;
                     case WHITE_PAWN2:
                         printf("White pawn 2\n");
                         white_pawn_2->pick();
+                        selected_piece = white_pawn_2;
                         break;
                     case WHITE_PAWN3:
                         printf("White pawn 3\n");
                         white_pawn_3->pick();
+                        selected_piece = white_pawn_3;
                         break;
                     case WHITE_PAWN4:
                         printf("White pawn 4\n");
                         white_pawn_4->pick();
+                        selected_piece = white_pawn_4;
                         break;
                     case WHITE_PAWN5:
                         printf("White pawn 5\n");
                         white_pawn_5->pick();
+                        selected_piece = white_pawn_5;
                         break;
                     case WHITE_PAWN6:
                         printf("White pawn 6\n");
                         white_pawn_6->pick();
+                        selected_piece = white_pawn_6;
                         break;
                     case WHITE_PAWN7:
                         printf("White pawn 7\n");
                         white_pawn_7->pick();
+                        selected_piece = white_pawn_7;
                         break;
                     case WHITE_PAWN8:
                         printf("White pawn 8\n");
                         white_pawn_8->pick();
+                        selected_piece = white_pawn_8;
                         break;
                 }
                 break;
@@ -338,66 +371,82 @@ void list_hits(GLint hits, GLuint *names){
                     case BLACK_ROOK1:
                         printf("black rook 1\n");
                         black_rook_1->pick();
+                        selected_piece = black_rook_1;
                         break;
                     case BLACK_ROOK2:
                         printf("black rook 2\n");
                         black_rook_2->pick();
+                        selected_piece = black_rook_2;
                         break;
                     case BLACK_KNIGHT1:
                         printf("black knight 1\n");
                         black_knight_1->pick();
+                        selected_piece = black_knight_1;
                         break;
                     case BLACK_KNIGHT2:
                         printf("black knight 2\n");
                         black_knight_2->pick();
+                        selected_piece = black_knight_2;
                         break;
                     case BLACK_BISHOP1:
                         printf("black bishop 1\n");
                         black_bishop_1->pick();
+                        selected_piece = black_bishop_1;
                         break;
                     case BLACK_BISHOP2:
                         printf("black bishop 2\n");
                         black_bishop_2->pick();
+                        selected_piece = black_bishop_2;
                         break;
                     case BLACK_QUEEN:
                         printf("black queen\n");
                         black_queen->pick();
+                        selected_piece = black_queen;
                         break;
                     case BLACK_KING:
                         printf("black king\n");
                         black_king->pick();
+                        selected_piece = black_king;
                         break;
                     case BLACK_PAWN1:
                         printf("black pawn 1\n");
                         black_pawn_1->pick();
+                        selected_piece = black_pawn_1;
                         break;
                     case BLACK_PAWN2:
                         printf("black pawn 2\n");
                         black_pawn_2->pick();
+                        selected_piece = black_pawn_2;
                         break;
                     case BLACK_PAWN3:
                         printf("black pawn 3\n");
                         black_pawn_3->pick();
+                        selected_piece = black_pawn_3;
                         break;
                     case BLACK_PAWN4:
                         printf("black pawn 4\n");
                         black_pawn_4->pick();
+                        selected_piece = black_pawn_4;
                         break;
                     case BLACK_PAWN5:
                         printf("black pawn 5\n");
                         black_pawn_5->pick();
+                        selected_piece = black_pawn_5;
                         break;
                     case BLACK_PAWN6:
                         printf("black pawn 6\n");
                         black_pawn_6->pick();
+                        selected_piece = black_pawn_6;
                         break;
                     case BLACK_PAWN7:
                         printf("black pawn 7\n");
                         black_pawn_7->pick();
+                        selected_piece = black_pawn_7;
                         break;
                     case BLACK_PAWN8:
                         printf("black pawn 8\n");
                         black_pawn_8->pick();
+                        selected_piece = black_pawn_8;
                         break;
                 }
                 break;
@@ -469,6 +518,7 @@ void list_hits(GLint hits, GLuint *names){
     }
     printf("position = %c%i\n",grid_column,grid_row);
     pickPiece(grid_col,grid_row);
+    checkPossibleMoves();
 }
 
 //[101][109][117][125][133][141][149][157] 8
