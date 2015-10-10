@@ -267,29 +267,6 @@ void swap_turns(void){
     }
 }
 
-void checkPossibleMoves(){
-    /*if(selected_piece != NULL){
-        printf("Color = %i\nRow = %i Col = %i\n",selected_piece->color,grid_row,grid_col);
-        for(int i = 0; i < sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]); i++){
-            printf("i = %i [0] = %i [1] = %i\n",i,highlighted_tiles[i][0],highlighted_tiles[i][1]);
-            if(highlighted_tiles[i][0] > 0){
-                if(highlighted_tiles[i][0] == grid_row && highlighted_tiles[i][1] == grid_col){
-                    printf("clicked on possible tile\n");
-                    selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
-                    selected_piece->unpick();
-                    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2);
-                    swap_turns();
-                    break;
-                }else{
-                    printf("has not clicked on this possible tile\n");
-                }
-            }else{
-                break;
-            }
-        }
-    }*/
-}
-
 void list_hits(GLint hits, GLuint *names){
     //printf("%d hits:\n", hits);
     for(int i = 0; i <= pieces.size()-1; i++){
@@ -471,11 +448,6 @@ void list_hits(GLint hits, GLuint *names){
         }
         if((GLubyte)names[i*4+3] == 164){
             move_pressed = true;
-            /*printf("Clicked on possible move\ncol = %i row = %i\n",grid_col,grid_row);
-            selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
-            swap_turns();
-            memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
-            selected_piece->unpick();*/
             break;
         }
         if(name >= 101){
@@ -549,10 +521,10 @@ void list_hits(GLint hits, GLuint *names){
         swap_turns();
         memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
         selected_piece->unpick();
+        //return;
     }
     printf("position = %c%i\n",grid_column,grid_row);
     pickPiece(grid_col,grid_row);
-    checkPossibleMoves();
 }
 
 //[101][109][117][125][133][141][149][157] 8
