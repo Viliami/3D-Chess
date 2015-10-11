@@ -103,7 +103,7 @@ void loadPieces(){
     black_pawn_7 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'g',7);
     black_pawn_8 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'h',7);
     board = new Piece("data/models/board.dae","data/textures/board.jpg",12,'z',0);
-    pieces.push_back(white_king);pieces.push_back(black_king);pieces.push_back(white_queen);pieces.push_back(black_queen);pieces.push_back(white_rook_1);pieces.push_back(white_rook_2);pieces.push_back(black_rook_1);pieces.push_back(black_rook_2);pieces.push_back(white_knight_1);pieces.push_back(white_knight_2);pieces.push_back(black_knight_1);pieces.push_back(black_knight_2);pieces.push_back(white_bishop_1);pieces.push_back(white_bishop_2);pieces.push_back(black_bishop_1);pieces.push_back(black_bishop_2);pieces.push_back(white_pawn_1);pieces.push_back(white_pawn_2);pieces.push_back(white_pawn_3);pieces.push_back(white_pawn_4);pieces.push_back(white_pawn_5);pieces.push_back(white_pawn_6);pieces.push_back(white_pawn_7);pieces.push_back(white_pawn_8);pieces.push_back(black_pawn_1);pieces.push_back(black_pawn_2);pieces.push_back(black_pawn_3);pieces.push_back(black_pawn_4);pieces.push_back(black_pawn_5);pieces.push_back(black_pawn_6);pieces.push_back(black_pawn_7);pieces.push_back(black_pawn_8);
+    pieces.push_back(white_rook_1);pieces.push_back(white_rook_2);pieces.push_back(white_knight_1);pieces.push_back(white_knight_2);pieces.push_back(white_bishop_1);pieces.push_back(white_bishop_2);pieces.push_back(white_queen);pieces.push_back(white_king);pieces.push_back(white_pawn_1);pieces.push_back(white_pawn_2);pieces.push_back(white_pawn_3);pieces.push_back(white_pawn_4);pieces.push_back(white_pawn_5);pieces.push_back(white_pawn_6);pieces.push_back(white_pawn_7);pieces.push_back(white_pawn_8);pieces.push_back(black_rook_1);pieces.push_back(black_rook_2);pieces.push_back(black_knight_1);pieces.push_back(black_knight_2);pieces.push_back(black_bishop_1);pieces.push_back(black_bishop_2);pieces.push_back(black_queen);pieces.push_back(black_king);pieces.push_back(black_pawn_1);pieces.push_back(black_pawn_2);pieces.push_back(black_pawn_3);pieces.push_back(black_pawn_4);pieces.push_back(black_pawn_5);pieces.push_back(black_pawn_6);pieces.push_back(black_pawn_7);pieces.push_back(black_pawn_8);
     printf("loaded\n");
 }
 
@@ -112,41 +112,10 @@ void drawBoard(){
 }
 
 void drawPieces(){
-    //white pieces
-    glLoadName(WHITE_ROOK1);    white_rook_1->draw();
-    glLoadName(WHITE_KNIGHT1);  white_knight_1->draw();
-    glLoadName(WHITE_BISHOP1);  white_bishop_1->draw();
-    glLoadName(WHITE_QUEEN);    white_queen->draw();
-    glLoadName(WHITE_KING);     white_king->draw();
-    glLoadName(WHITE_BISHOP2);  white_bishop_2->draw();
-    glLoadName(WHITE_KNIGHT2);  white_knight_2->draw(); 
-    glLoadName(WHITE_ROOK2);    white_rook_2->draw();
-    glLoadName(WHITE_PAWN1);    white_pawn_1->draw();
-    glLoadName(WHITE_PAWN2);    white_pawn_2->draw();
-    glLoadName(WHITE_PAWN3);    white_pawn_3->draw();
-    glLoadName(WHITE_PAWN4);    white_pawn_4->draw();
-    glLoadName(WHITE_PAWN5);    white_pawn_5->draw();
-    glLoadName(WHITE_PAWN6);    white_pawn_6->draw();
-    glLoadName(WHITE_PAWN7);    white_pawn_7->draw();
-    glLoadName(WHITE_PAWN8);    white_pawn_8->draw();
-
-    //black pieces
-    glLoadName(BLACK_ROOK1);    black_rook_1->draw();
-    glLoadName(BLACK_KNIGHT1);  black_knight_1->draw();
-    glLoadName(BLACK_BISHOP1);  black_bishop_1->draw();
-    glLoadName(BLACK_QUEEN);    black_queen->draw();
-    glLoadName(BLACK_KING);     black_king->draw();
-    glLoadName(BLACK_BISHOP2);  black_bishop_2->draw();
-    glLoadName(BLACK_KNIGHT2);  black_knight_2->draw();
-    glLoadName(BLACK_ROOK2);    black_rook_2->draw();
-    glLoadName(BLACK_PAWN1);    black_pawn_1->draw();
-    glLoadName(BLACK_PAWN2);    black_pawn_2->draw();
-    glLoadName(BLACK_PAWN3);    black_pawn_3->draw();
-    glLoadName(BLACK_PAWN4);    black_pawn_4->draw();
-    glLoadName(BLACK_PAWN5);    black_pawn_5->draw();
-    glLoadName(BLACK_PAWN6);    black_pawn_6->draw();
-    glLoadName(BLACK_PAWN7);    black_pawn_7->draw();
-    glLoadName(BLACK_PAWN8);    black_pawn_8->draw();
+    for(int i = 0; i <= pieces.size()-1; i++){
+        glLoadName(1+i);
+        pieces.at(i)->draw();
+    }
 
 }
 
