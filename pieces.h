@@ -80,7 +80,7 @@ class Piece{
 	    void unpick(void);
         void move(unsigned int col, unsigned int row);
         void move(char col, unsigned int row);
-        void createMoveList(int col_inc, int row_inc, int min_array, int max_array);
+        void createMoveList(int col_inc, int row_inc, int min_array);
 };
 
 class King : public Piece{
