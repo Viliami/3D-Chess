@@ -5,8 +5,8 @@ float angle = 0.0f;
 GLuint p,f,v,tile;
 int grid_row, grid_col;
 char grid_column;
-//int highlighted_tiles[28][2] = {0};
 int highlighted_tiles[28][2] = {0};
+int grid_pieces[8][8] = {0}; 
 GAMESTATE gamestate;
 
 void initDLs(void){
@@ -29,72 +29,22 @@ void drawGrid(void){
     int counter = 0;
     for(int i = 0; i <= 7; i++){
         for(int j = 0; j <= 7; j++){
-            
-            /*if(i+1 == grid_col && j+1 == grid_row){
-                glColor4f(1,0,0,0.3);
-                glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
-                glCallList(tile);
-                glColor4f(1,1,1,0.3);
-            }else{*/
-                /*bool success = false;
-                for(int k = 0; k < 28; k++){
-                    if(highlighted_tiles[k] != 0){
-                        if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
-                            counter++;
-                            glLoadName(100+counter);
-                            glPushMatrix();
-                            //printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
-                            glColor4f(1,0.1,0.1,0);
-                            glTranslatef(-7+(i*2),-0.97,-(-7+(j*2)));
-                            glCallList(tile);
-                            glColor4f(1,0,0,1);
-                            glBegin(GL_LINES);
-                                glVertex3f(1,0,1);
-                                glVertex3f(0.4,0,1);
-                                glVertex3f(1,0,-0.9);
-                                glVertex3f(0.4,0,-0.9);
-                                glVertex3f(-1,0,1);
-                                glVertex3f(-0.4,0,1);
-                                glVertex3f(-1,0,-0.9);
-                                glVertex3f(-0.4,0,-0.9);
-                                glVertex3f(-0.9,0,1);
-                                glVertex3f(-0.9,0,0.4);
-                                glVertex3f(-0.9,0,-1);
-                                glVertex3f(-0.9,0,-0.4);
-                                glVertex3f(0.9,0,1);
-                                glVertex3f(0.9,0,0.4);
-                                glVertex3f(0.9,0,-1);
-                                glVertex3f(0.9,0,-0.4);
-                            glEnd();
-                            success = true;
-                            glPopMatrix();
-                            break;
-                        }
-                    }
-                }*/
-                //if(!success){
-                    counter++;
-                    glLoadName(100+counter);
-                    glPushMatrix();
-                    glColor4f(1,1,1,0);
-                    glTranslatef(-7+(i*2),-0.97,(-7+(j*2)));
-                    glCallList(tile);
-                    glPopMatrix();
-                //}
-            //}
-            //glPopMatrix();
+            counter++;
+            glLoadName(100+counter);
+            glPushMatrix();
+            glColor4f(1,1,1,0);
+            glTranslatef(-7+(i*2),-0.97,(-7+(j*2)));
+            glCallList(tile);
+            glPopMatrix();
         }
     }
     for(int k = 0; k < 28; k++){
         if(highlighted_tiles[k] != 0){
             int row = highlighted_tiles[k][0]-1;
             int col = highlighted_tiles[k][1]-1;
-            //if(highlighted_tiles[k][0] == j+1 && highlighted_tiles[k][1] == i+1){
             if(col >= 0 && col >= 0 && col <= 7 && col <= 7){
-                //counter++;
-                //glLoadName(100+counter);
+                glLoadName(165);
                 glPushMatrix();
-                //printf("row = %i col = %i\n",highlighted_tiles[k][0],highlighted_tiles[k][1]);
                 glColor4f(1,0,0,0.5);
                 glTranslatef(-7+(col*2),-0.96,-(-7+(row*2)));
                 glCallList(tile);
@@ -117,9 +67,7 @@ void drawGrid(void){
                 glVertex3f(0.9,0,-1);
                 glVertex3f(0.9,0,-0.4);
                 glEnd();
-                //success = true;
                 glPopMatrix();
-                //break;
             }
         }
     }
@@ -425,12 +373,16 @@ void Piece::unpick(void){
     //grid_col = 0;
 }
 
-void Piece::listMoves(void){
+void clearMovesList(void){
     memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
 }
 
+void Piece::listMoves(void){
+    clearMovesList();
+}
+
 void Pawn::listMoves(void){
-    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    clearMovesList();
     if(color == BLACK){
             highlight_tile(c_Col,c_Row-1,0);
             highlight_tile(c_Col,c_Row-2,1);
@@ -441,7 +393,7 @@ void Pawn::listMoves(void){
 }
 
 void Knight::listMoves(void){
-    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    clearMovesList();
     highlight_tile(c_Col-1,c_Row+2,0);
     highlight_tile(c_Col+1,c_Row+2,1);
     highlight_tile(c_Col-1,c_Row-2,2);
@@ -453,7 +405,7 @@ void Knight::listMoves(void){
 }
 
 void Bishop::listMoves(void){
-    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    clearMovesList();
     highlight_tile(c_Col-1,c_Row+1,0);
     highlight_tile(c_Col-1,c_Row-1,1);
     highlight_tile(c_Col+1,c_Row+1,2);
@@ -482,7 +434,57 @@ void Bishop::listMoves(void){
     highlight_tile(c_Col-7,c_Row-7,25);
     highlight_tile(c_Col+7,c_Row+7,26);
     highlight_tile(c_Col+7,c_Row-7,27);
-    
+}
+
+void Rook::listMoves(void){
+    clearMovesList();
+    highlight_tile(c_Col+1,c_Row,0);
+    highlight_tile(c_Col+2,c_Row,1);
+    highlight_tile(c_Col+3,c_Row,2);
+    highlight_tile(c_Col+4,c_Row,3);
+    highlight_tile(c_Col+5,c_Row,4);
+    highlight_tile(c_Col+6,c_Row,5);
+    highlight_tile(c_Col+7,c_Row,6);
+
+    highlight_tile(c_Col-1,c_Row,7);
+    highlight_tile(c_Col-2,c_Row,8);
+    highlight_tile(c_Col-3,c_Row,9);
+    highlight_tile(c_Col-4,c_Row,10);
+    highlight_tile(c_Col-5,c_Row,11);
+    highlight_tile(c_Col-6,c_Row,12);
+    highlight_tile(c_Col-7,c_Row,13);
+
+    highlight_tile(c_Col,c_Row+1,14);
+    highlight_tile(c_Col,c_Row+2,15);
+    highlight_tile(c_Col,c_Row+3,16);
+    highlight_tile(c_Col,c_Row+4,17);
+    highlight_tile(c_Col,c_Row+5,18);
+    highlight_tile(c_Col,c_Row+6,19);
+    highlight_tile(c_Col,c_Row+7,20);
+
+    highlight_tile(c_Col,c_Row-1,21);
+    highlight_tile(c_Col,c_Row-2,22);
+    highlight_tile(c_Col,c_Row-3,23);
+    highlight_tile(c_Col,c_Row-4,24);
+    highlight_tile(c_Col,c_Row-5,25);
+    highlight_tile(c_Col,c_Row-6,26);
+    highlight_tile(c_Col,c_Row-7,27);
+}
+
+void King::listMoves(void){
+    clearMovesList();
+    highlight_tile(c_Col+1,c_Row,0);
+    highlight_tile(c_Col-1,c_Row,1);
+    highlight_tile(c_Col,c_Row+1,2);
+    highlight_tile(c_Col,c_Row-1,3);
+    highlight_tile(c_Col+1,c_Row+1,4);
+    highlight_tile(c_Col+1,c_Row-1,5);
+    highlight_tile(c_Col-1,c_Row+1,6);
+    highlight_tile(c_Col-1,c_Row-1,7);
+}
+
+void Queen::listMoves(void){
+    clearMovesList();
 }
 
 void Piece::move(unsigned int col, unsigned int row){
