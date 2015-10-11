@@ -178,6 +178,11 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
     }else{
         color = -1;
     }
+    if(color == BLACK){
+        grid_pieces[c_Row-1][c_Col-1] = BLACK;
+    }else if(color == WHITE){
+        grid_pieces[c_Row-1][c_Col-1] = WHITE;
+    }
 }
 
 void Piece::draw(){
@@ -488,12 +493,15 @@ void Queen::listMoves(void){
 }
 
 void Piece::move(unsigned int col, unsigned int row){
+    grid_pieces[c_Row-1][c_Col-1] = 0;
     c_Col = col;
     c_Row = row;
     c_Column = column[col-1];
+    grid_pieces[c_Row-1][c_Col-1] = color;
 }
 
 void Piece::move(char col, unsigned int row){
+    grid_pieces[c_Row-1][c_Col-1] = 0;
     for(unsigned int i = 0; i <= sizeof(column)/sizeof(char); i++){
         if(tolower(column[i]) == tolower(col)){
             c_Col = i+1;
@@ -501,4 +509,5 @@ void Piece::move(char col, unsigned int row){
     }
     c_Row = row;
     c_Column = col;
+    grid_pieces[c_Row-1][c_Col-1] = color;
 }
