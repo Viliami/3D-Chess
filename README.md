@@ -1,6 +1,8 @@
 # 3D-Chess
 3D chess game made in OpenGL
 
+![Alt text](https://cloud.githubusercontent.com/assets/13442473/10416393/5e9edbda-7072-11e5-89e5-b0e79c520706.png "Lines aren't rendered properly in this image")
+
 ###Dependencies
 - Freeglut3 (Opensource version of GLUT).
 - GLEW (GL extensions wrangler library).
