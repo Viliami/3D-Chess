@@ -355,8 +355,15 @@ void Knight::draw(){
     angle+=1.0f;
 }
 
+bool checkSquare(int col, int row){
+    if(grid_pieces[row-1][col-1] >= 1){
+        return true;
+    }
+    return false;
+}
+
 void highlight_tile(int col, int row,unsigned int tile, bool captured_mode = false){
-    if(col <= 8 && row <= 8 && col > 0 && row > 0){
+    if((col <= 8 && row <= 8 && col > 0 && row > 0) && ((gamestate == WHITE_TURN && grid_pieces[row-1][col-1] != WHITE) ||(gamestate == BLACK_TURN && grid_pieces[row-1][col-1] != BLACK))){
         highlighted_tiles[tile][0] = row;
         highlighted_tiles[tile][1] = col;
     }
@@ -373,25 +380,15 @@ void Piece::pick(void){
 
 void Piece::unpick(void){
     picked = false;
-    //memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
-    //grid_row = 0;
-    //grid_col = 0;
-}
-
-bool checkSquare(int col, int row){
-    if(grid_pieces[row-1][col-1] >= 1){
-        return true;
-    }
-    return false;
 }
 
 void clearMovesList(void){
     memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
 }
 
-void Piece::createMoveList(int col_inc, int row_inc, int min_array, int max_array){ //column increment,row increment
+void Piece::createMoveList(int col_inc, int row_inc, int min_array){ //column increment,row increment
     int r = c_Row, c = c_Col;
-    for(int i = 0; i < (max_array-min_array); i++){
+    for(int i = 0; i < 7; i++){
         c = c_Col-(col_inc*(i+1));
         r = c_Row-(row_inc*(i+1));
         if(checkSquare(c,r)){
@@ -433,45 +430,18 @@ void Knight::listMoves(void){
 
 void Bishop::listMoves(void){
     clearMovesList();
-    createMoveList(1,1,0,6);
-    createMoveList(-1,1,7,13);
-    createMoveList(-1,-1,14,20);
-    createMoveList(1,-1,21,27);
+    createMoveList(1,1,0);
+    createMoveList(-1,1,7);
+    createMoveList(-1,-1,14);
+    createMoveList(1,-1,21);
 }
 
 void Rook::listMoves(void){
     clearMovesList();
-    highlight_tile(c_Col+1,c_Row,0);
-    highlight_tile(c_Col+2,c_Row,1);
-    highlight_tile(c_Col+3,c_Row,2);
-    highlight_tile(c_Col+4,c_Row,3);
-    highlight_tile(c_Col+5,c_Row,4);
-    highlight_tile(c_Col+6,c_Row,5);
-    highlight_tile(c_Col+7,c_Row,6);
-
-    highlight_tile(c_Col-1,c_Row,7);
-    highlight_tile(c_Col-2,c_Row,8);
-    highlight_tile(c_Col-3,c_Row,9);
-    highlight_tile(c_Col-4,c_Row,10);
-    highlight_tile(c_Col-5,c_Row,11);
-    highlight_tile(c_Col-6,c_Row,12);
-    highlight_tile(c_Col-7,c_Row,13);
-
-    highlight_tile(c_Col,c_Row+1,14);
-    highlight_tile(c_Col,c_Row+2,15);
-    highlight_tile(c_Col,c_Row+3,16);
-    highlight_tile(c_Col,c_Row+4,17);
-    highlight_tile(c_Col,c_Row+5,18);
-    highlight_tile(c_Col,c_Row+6,19);
-    highlight_tile(c_Col,c_Row+7,20);
-
-    highlight_tile(c_Col,c_Row-1,21);
-    highlight_tile(c_Col,c_Row-2,22);
-    highlight_tile(c_Col,c_Row-3,23);
-    highlight_tile(c_Col,c_Row-4,24);
-    highlight_tile(c_Col,c_Row-5,25);
-    highlight_tile(c_Col,c_Row-6,26);
-    highlight_tile(c_Col,c_Row-7,27);
+    createMoveList(1,0,0);
+    createMoveList(-1,0,7);
+    createMoveList(0,1,14);
+    createMoveList(0,-1,21);
 }
 
 void King::listMoves(void){
