@@ -48,47 +48,26 @@ Pawn* black_pawn_8;
 Piece* board;
 Piece* selected_piece = NULL;
 std::vector<Piece*> pieces;
-
 float y_level = 0.0f;
-
-#define WHITE_ROOK1 1
-#define WHITE_ROOK2 2
-#define WHITE_KNIGHT1 3
-#define WHITE_KNIGHT2 4
-#define WHITE_BISHOP1 5
-#define WHITE_BISHOP2 6
-#define WHITE_QUEEN 7
-#define WHITE_KING 8
-#define WHITE_PAWN1 9
-#define WHITE_PAWN2 10
-#define WHITE_PAWN3 11
-#define WHITE_PAWN4 12
-#define WHITE_PAWN5 13
-#define WHITE_PAWN6 14
-#define WHITE_PAWN7 15
-#define WHITE_PAWN8 16
-
-#define BLACK_ROOK1 17
-#define BLACK_ROOK2 18
-#define BLACK_KNIGHT1 19
-#define BLACK_KNIGHT2 20
-#define BLACK_BISHOP1 21
-#define BLACK_BISHOP2 22
-#define BLACK_QUEEN 23
-#define BLACK_KING 24
-#define BLACK_PAWN1 25
-#define BLACK_PAWN2 26
-#define BLACK_PAWN3 27
-#define BLACK_PAWN4 28
-#define BLACK_PAWN5 29
-#define BLACK_PAWN6 30
-#define BLACK_PAWN7 31
-#define BLACK_PAWN8 32
-
 
 extern void setShaders(void);
 extern void drawGrid(void);
 extern void initDLs(void);
+
+void print_grid_pieces(void){
+    for(int row = 0; row <= 7; row++){
+        for(int col = 0; col <= 7; col++){
+            int element = grid_pieces[row][col];
+            if(element > 0){
+                printf("[%i]",element);
+            }else if(element == 0){
+                printf("[0000]");
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
 
 void loadPieces(){
     white_king = new King("data/models/king.dae","data/textures/white_king.jpg",0,'e',1);
@@ -183,6 +162,7 @@ void draw(void){
     drawBoard();
     drawGrid();
     drawPieces();
+    //print_grid_pieces();
 
     glutSwapBuffers();
 }
@@ -446,7 +426,7 @@ void list_hits(GLint hits, GLuint *names){
                 }
                 break;
         }
-        if((GLubyte)names[i*4+3] == 164){
+        if((GLubyte)names[i*4+3] == 165){
             move_pressed = true;
             break;
         }
