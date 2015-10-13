@@ -61,7 +61,7 @@ enum GAMESTATE : int{
 };
 
 //global variables
-extern int grid_pieces[8][8],grid_row, grid_col,highlighted_tiles[28][2];
+extern int grid_pieces[8][8],grid_row, grid_col,highlighted_tiles[56][2];
 extern char column[9],grid_column;
 extern GAMESTATE gamestate; //enum which stores current state, like player turns and menu
 extern GLuint p,f,v; //program, frag shader, vert shader
@@ -78,7 +78,7 @@ class Piece{
         char c_Column;
         GLfloat *vertexArray,*normalArray,*uvArray,angle;
         float var_swag;
-	    bool picked = false;
+	    bool picked = false, en_passant = false;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){};
@@ -90,6 +90,11 @@ class Piece{
 	    void unpick(void);
         void createMoveList(int col_inc, int row_inc, int min_array);
 };
+
+extern std::vector<Piece*> pieces;
+
+extern Piece* piece_at(int col, int row);
+extern void remove_piece(int col, int row);
 
 class King : public Piece{
     public:
@@ -146,6 +151,7 @@ class Bishop : public Piece{
 class Pawn : public Piece{
     public:
         bool firstMove = true;
+        bool en_passant = false;
 
         Pawn(const char* modelFile, const char* textureFile,int textureNum,char col, int row) : Piece(modelFile, textureFile, textureNum,col,row){
             printf("Pawn loaded\n");
