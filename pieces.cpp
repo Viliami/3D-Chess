@@ -8,6 +8,7 @@ char grid_column;
 int highlighted_tiles[28][2] = {0};
 int grid_pieces[8][8] = {0}; 
 GAMESTATE gamestate;
+char column[9] = {'a','b','c','d','e','f','g','h','z'};
 
 void initDLs(void){
     printf("%i\n",A);
@@ -408,11 +409,30 @@ void Piece::listMoves(void){
 void Pawn::listMoves(void){
     clearMovesList();
     if(color == BLACK){
-        highlight_tile(c_Col,c_Row-1,0);
-        highlight_tile(c_Col,c_Row-2,1);
+        if(!checkSquare(c_Col, c_Row-1)){ //if no piece is in front than space is free to move
+            highlight_tile(c_Col, c_Row-1, 0);
+            if(firstMove && !checkSquare(c_Col, c_Row-2)) //first move is the only time pawn can move two squares
+                highlight_tile(c_Col, c_Row-2, 1);
+        }
+        //diagonal capture moves
+        if(grid_pieces[c_Row-2][c_Col-2] == WHITE){
+            highlight_tile(c_Col-1, c_Row-1, 2, true);
+        }
+        if(grid_pieces[c_Row-2][c_Col] == WHITE){
+            highlight_tile(c_Col+1, c_Row-1, 3, true);
+        }
     }else if(color == WHITE){
-        highlight_tile(c_Col,c_Row+1,0);
-        highlight_tile(c_Col,c_Row+2,1);
+        if(!checkSquare(c_Col, c_Row+1)){
+            highlight_tile(c_Col, c_Row+1, 0);
+            if(firstMove && !checkSquare(c_Col, c_Row+2))
+                highlight_tile(c_Col, c_Row+2, 1);
+        }
+        if(grid_pieces[c_Row][c_Col-2] == BLACK){
+            highlight_tile(c_Col-1, c_Row+1, 2, true);
+        }
+        if(grid_pieces[c_Row][c_Col] == BLACK){
+            highlight_tile(c_Col+1, c_Row+1, 3, true);
+        }
     }
 }
 
@@ -466,6 +486,13 @@ void Piece::move(unsigned int col, unsigned int row){
     c_Row = row;
     c_Column = column[col-1];
     grid_pieces[c_Row-1][c_Col-1] = color;
+}
+
+void Pawn::move(unsigned int col, unsigned int row){
+    Piece::move(col,row);
+    if(firstMove){
+        firstMove = false;
+    }
 }
 
 void Piece::move(char col, unsigned int row){
