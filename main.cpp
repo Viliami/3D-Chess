@@ -1,5 +1,4 @@
 #include "pieces.h"
-#include <algorithm>
 
 
 float data[] = {
