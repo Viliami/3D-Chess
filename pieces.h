@@ -8,6 +8,7 @@
 #include <SOIL/SOIL.h>
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 #define A 0
 #define B 1
@@ -58,28 +59,35 @@
 enum GAMESTATE : int{
     MENU,WHITE_TURN,BLACK_TURN,WHITE_WIN,BLACK_WIN,TIE
 };
-extern int grid_pieces[8][8];
+
+//global variables
+extern int grid_pieces[8][8],grid_row, grid_col,highlighted_tiles[28][2];
+extern char column[9],grid_column;
+extern GAMESTATE gamestate; //enum which stores current state, like player turns and menu
+extern GLuint p,f,v; //program, frag shader, vert shader
+
+//gloval functions
+extern void setShaders(void);
+extern void drawGrid(void);
+extern void initDLs(void);
+extern void clearMovesList(void);
 
 class Piece{
     public:
-        char column[9] = {'a','b','c','d','e','f','g','h','z'};
-        int c_Row, c_Col; //current row and current column
+        int c_Row, c_Col, color, textureNumber, value, numVerts; //c_Row = current row c_Col = current column
         char c_Column;
         GLfloat *vertexArray,*normalArray,*uvArray,angle;
-        int value, numVerts;
-        unsigned int textureNumber;
         float var_swag;
 	    bool picked = false;
-        int color;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){};
         virtual void draw();
 	    virtual void listMoves(void);
+        virtual void move(unsigned int col, unsigned int row);
+        virtual void move(char col, unsigned int row);
 	    void pick(void);
 	    void unpick(void);
-        void move(unsigned int col, unsigned int row);
-        void move(char col, unsigned int row);
         void createMoveList(int col_inc, int row_inc, int min_array);
 };
 
@@ -137,10 +145,13 @@ class Bishop : public Piece{
 
 class Pawn : public Piece{
     public:
+        bool firstMove = true;
+
         Pawn(const char* modelFile, const char* textureFile,int textureNum,char col, int row) : Piece(modelFile, textureFile, textureNum,col,row){
             printf("Pawn loaded\n");
             value = 1;
         };
         ~Pawn();
         void listMoves(void);
+        void move(unsigned int col, unsigned int row);
 };
