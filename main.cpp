@@ -1,6 +1,7 @@
 #include "pieces.h"
+#include <algorithm>
 
-extern GLuint p,f,v;
+
 float data[] = {
     0,1,0,
     -1,-1,0,
@@ -8,10 +9,6 @@ float data[] = {
 };
 float lpos[4] = {1,0.5,1,0};
 int screen_width = 600, screen_height = 600;
-extern int grid_row, grid_col;
-extern char grid_column;
-extern GAMESTATE gamestate;
-extern int highlighted_tiles[28][2];
 
 King* white_king;
 King* black_king;
@@ -49,10 +46,6 @@ Piece* board;
 Piece* selected_piece = NULL;
 std::vector<Piece*> pieces;
 float y_level = 0.0f;
-
-extern void setShaders(void);
-extern void drawGrid(void);
-extern void initDLs(void);
 
 void print_grid_pieces(void){
     for(int row = 0; row <= 7; row++){
@@ -208,6 +201,21 @@ void pickPiece(int col, int row){
     }
 }
 
+Piece* piece_at(int col, int row){
+    for(int i = 0; i <= pieces.size()-1; i++){
+        if(pieces.at(i)->c_Row == row && pieces.at(i)->c_Col == col){
+            return pieces.at(i);
+        }
+    }
+}
+
+void remove_piece(int col, int row){
+    std::vector<Piece*>::iterator it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
+    if(it != pieces.end()){
+        pieces.erase(it);
+    }
+}
+
 void swap_turns(void){
     if(gamestate == WHITE_TURN){
         gamestate = BLACK_TURN;
@@ -217,14 +225,12 @@ void swap_turns(void){
 }
 
 void list_hits(GLint hits, GLuint *names){
-    //printf("%d hits:\n", hits);
     for(int i = 0; i <= pieces.size()-1; i++){
         pieces.at(i)->unpick();
     }
     bool move_pressed = false;
     for (int i = 0; i < hits; i++){
         int name = (GLubyte)names[i*4+3];
-        printf("Name on stack: %d\n", name);
 	    if(name >= 1 && name <= 16 && gamestate == WHITE_TURN){
 		    pieces[name-1]->pick();
 		    selected_piece = pieces[name-1];
@@ -232,95 +238,30 @@ void list_hits(GLint hits, GLuint *names){
 		    pieces[name-1]->pick();
 		    selected_piece = pieces[name-1];
 	    }
-        if((GLubyte)names[i*4+3] == 165){
+        if(name == 165){
             move_pressed = true;
             break;
         }
         if(name >= 101){
             name -= 100;
             grid_row = 9-(name%8);
-            switch(name%8){
-                case 0:
-                    //printf("row = %i\n",1);
-                    grid_row = 1;
-                    break;
-                case 7:
-                    //printf("row = %i\n",2);
-                    break;
-                case 6:
-                    //printf("row = %i\n",3);
-                    break;
-                case 5:
-                    //printf("row = %i\n",4);
-                    break;
-                case 4:
-                    //printf("row = %i\n",5);
-                    break;
-                case 3:
-                    //printf("row = %i\n",6);
-                    break;
-                case 2:
-                    //printf("row = %i\n",7);
-                    break;
-                case 1:
-                    //printf("row = %i\n",8);
-                    break;
-            }
-            if(name <= 8){
-                //printf("column = 'A'\n");
-                grid_column = 'A';
-                grid_col = 1;
-            }else if(name <= 16){
-                //printf("column = 'B'\n");
-                grid_column = 'B';
-                grid_col = 2;
-            }else if(name <= 24){
-                //printf("column = 'C'\n");
-                grid_column = 'C';
-                grid_col = 3;
-            }else if(name <= 32){
-                //printf("column = 'D'\n");
-                grid_column = 'D';
-                grid_col = 4;
-            }else if(name <= 40){
-                //printf("column = 'E'\n");
-                grid_column = 'E';
-                grid_col = 5;
-            }else if(name <= 48){
-                //printf("column = 'F'\n");
-                grid_column = 'F';
-                grid_col = 6;
-            }else if(name <= 56){
-                //printf("column = 'G'\n");
-                grid_column = 'G';
-                grid_col = 7;
-            }else if(name <= 64){
-                //printf("column = 'H'\n");
-                grid_column = 'H';
-                grid_col = 8;
-            }
+            grid_col = ceil((float)name/8.0f);
+            grid_column = column[grid_col-1];
         }
     }
     if(move_pressed){
-        printf("Clicked on possible move\ncol = %i row = %i\n",grid_col,grid_row);
+        if((grid_pieces[grid_row-1][grid_col-1] == BLACK && gamestate == WHITE_TURN) || (grid_pieces[grid_row-1][grid_col-1] == WHITE && gamestate == BLACK_TURN)){
+            remove_piece(grid_col,grid_row);
+        }
         selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
         swap_turns();
-        memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+        clearMovesList();
         selected_piece->unpick();
-        //return;
     }
     printf("position = %c%i\n",grid_column,grid_row);
     pickPiece(grid_col,grid_row);
 }
-//[101][109][117][125][133][141][149][157] 8
-//[102][110][118][126][134][142][150][158] 7
-//[103][111][119][127][135][143][151][159] 6
-//[104][112][120][128][136][144][152][160] 5
-//[105][113][121][129][137][145][153][161] 4
-//[106][114][122][130][138][146][154][162] 3
-//[107][115][123][131][139][147][155][163] 2
-//[108][116][124][132][140][148][156][164] 1
-//  A    B    C    D    E    F    G    H
+
 void gl_select(int x, int y){
     GLuint buff[64] = {0};
     GLint hits, view[4];
