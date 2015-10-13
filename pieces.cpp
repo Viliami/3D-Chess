@@ -5,7 +5,7 @@ float angle = 0.0f;
 GLuint p,f,v,tile;
 int grid_row, grid_col;
 char grid_column;
-int highlighted_tiles[28][2] = {0};
+int highlighted_tiles[56][2] = {0};
 int grid_pieces[8][8] = {0}; 
 GAMESTATE gamestate;
 char column[9] = {'a','b','c','d','e','f','g','h','z'};
@@ -39,7 +39,7 @@ void drawGrid(void){
             glPopMatrix();
         }
     }
-    for(int k = 0; k < 28; k++){
+    for(int k = 0; k < sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]); k++){
         if(highlighted_tiles[k] != 0){
             int row = highlighted_tiles[k][0]-1;
             int col = highlighted_tiles[k][1]-1;
@@ -376,7 +376,6 @@ void Piece::pick(void){
     grid_row = c_Row;
     grid_col = c_Col;
     grid_column = c_Column;
-    //printf("selected row = %i col = %i\n",grid_row,grid_col,grid_column);
 }
 
 void Piece::unpick(void){
@@ -384,7 +383,7 @@ void Piece::unpick(void){
 }
 
 void clearMovesList(void){
-    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*28*2); //clear the array
+    memset(highlighted_tiles,0,sizeof(highlighted_tiles[0][0])*(sizeof(highlighted_tiles)/sizeof(highlighted_tiles[0]))*2); //clear the array
 }
 
 void Piece::createMoveList(int col_inc, int row_inc, int min_array){ //column increment,row increment
@@ -478,6 +477,14 @@ void King::listMoves(void){
 
 void Queen::listMoves(void){
     clearMovesList();
+    createMoveList(1,0,0);
+    createMoveList(-1,0,7);
+    createMoveList(0,1,14);
+    createMoveList(0,-1,21);
+    createMoveList(1,1,28);
+    createMoveList(-1,1,35);
+    createMoveList(-1,-1,42);
+    createMoveList(1,-1,48);
 }
 
 void Piece::move(unsigned int col, unsigned int row){
