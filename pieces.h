@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <algorithm>
 
 #define A 0
 #define B 1
@@ -151,7 +152,6 @@ class Bishop : public Piece{
 class Pawn : public Piece{
     public:
         bool firstMove = true;
-        bool en_passant = false;
 
         Pawn(const char* modelFile, const char* textureFile,int textureNum,char col, int row) : Piece(modelFile, textureFile, textureNum,col,row){
             printf("Pawn loaded\n");
