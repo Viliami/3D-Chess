@@ -9,6 +9,22 @@ int highlighted_tiles[56][2] = {0};
 int grid_pieces[8][8] = {0}; 
 GAMESTATE gamestate;
 char column[9] = {'a','b','c','d','e','f','g','h','z'};
+std::vector<Piece*> pieces;
+
+Piece* piece_at(int col, int row){
+    for(int i = 0; i <= pieces.size()-1; i++){
+        if(pieces.at(i)->c_Row == row && pieces.at(i)->c_Col == col){
+            return pieces.at(i);
+        }
+    }
+}
+
+void remove_piece(int col, int row){
+    std::vector<Piece*>::iterator it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
+    if(it != pieces.end()){
+        pieces.erase(it);
+    }
+}
 
 void initDLs(void){
     printf("%i\n",A);
@@ -420,6 +436,17 @@ void Pawn::listMoves(void){
         if(grid_pieces[c_Row-2][c_Col] == WHITE){
             highlight_tile(c_Col+1, c_Row-1, 3, true);
         }
+        //en passant
+        if(grid_pieces[c_Row-1][c_Col-2] == WHITE){
+            if(piece_at(c_Col-1,c_Row)->value == 1 && piece_at(c_Col-1,c_Row)->en_passant){ //if it's a pawn after first move
+                printf("en passant\n");
+            }
+        }
+        if(grid_pieces[c_Row-1][c_Col] == WHITE && piece_at(c_Col+1,c_Row)->en_passant){
+            if(piece_at(c_Col+1,c_Row)->value == 1){
+                printf("en passant\n");
+            }
+        }
     }else if(color == WHITE){
         if(!checkSquare(c_Col, c_Row+1)){
             highlight_tile(c_Col, c_Row+1, 0);
@@ -431,6 +458,17 @@ void Pawn::listMoves(void){
         }
         if(grid_pieces[c_Row][c_Col] == BLACK){
             highlight_tile(c_Col+1, c_Row+1, 3, true);
+        }
+        //en passant
+        if(grid_pieces[c_Row-1][c_Col-2] == BLACK){
+            if(piece_at(c_Col-1, c_Row)->value == 1 && piece_at(c_Col-1,c_Row)->en_passant){
+                printf("en passant\n");
+            }
+        }
+        if(grid_pieces[c_Row-1][c_Col] == BLACK){
+            if(piece_at(c_Col+1, c_Row)->value == 1 && piece_at(c_Col+1,c_Row)->en_passant){
+                printf("en passant\n");
+            }
         }
     }
 }
@@ -497,8 +535,14 @@ void Piece::move(unsigned int col, unsigned int row){
 
 void Pawn::move(unsigned int col, unsigned int row){
     Piece::move(col,row);
+    if(en_passant){
+        en_passant = false;
+        printf("2nd move\n");
+    }
     if(firstMove){
         firstMove = false;
+        en_passant = true;
+        printf("1st move\n");
     }
 }
 
