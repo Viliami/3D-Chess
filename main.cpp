@@ -44,7 +44,7 @@ Pawn* black_pawn_7;
 Pawn* black_pawn_8;
 Piece* board;
 Piece* selected_piece = NULL;
-std::vector<Piece*> pieces;
+extern std::vector<Piece*> pieces;
 float y_level = 0.0f;
 
 void print_grid_pieces(void){
@@ -198,21 +198,6 @@ void pickPiece(int col, int row){
             selected_piece = piece;
             break;
         }
-    }
-}
-
-Piece* piece_at(int col, int row){
-    for(int i = 0; i <= pieces.size()-1; i++){
-        if(pieces.at(i)->c_Row == row && pieces.at(i)->c_Col == col){
-            return pieces.at(i);
-        }
-    }
-}
-
-void remove_piece(int col, int row){
-    std::vector<Piece*>::iterator it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
-    if(it != pieces.end()){
-        pieces.erase(it);
     }
 }
 
