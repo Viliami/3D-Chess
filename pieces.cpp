@@ -206,11 +206,7 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
 void Piece::draw(){
     glPushMatrix();
     float x = 0.0f;
-    float y = 0.0f;
     float z = 0.0f;
-    if(picked){
-        //y = 2.0f;
-    }
     switch(c_Column){
         case 'a':
             x = -8.8f;
@@ -237,38 +233,17 @@ void Piece::draw(){
             x = 8.7f;
             break;
     };
-    switch(c_Row){
-        case 1:
-            z = 8.8f;
-            break;
-        case 2:
-            z = 6.3f;
-            break;
-        case 3:
-            z = 3.8f;
-            break;
-        case 4:
-            z = 1.3f;
-            break;
-        case 5:
-            z = -1.2f;
-            break;
-        case 6:
-            z = -3.7f;
-            break;
-        case 7:
-            z = -6.2f;
-            break;
-        case 8:
-            z = -8.7f;
-            break;
-    };
+    for(int i = 1; i <= 8; i++){
+        if(c_Row == i){
+            z = 11.3-(2.5*i);
+        }
+    }
     if(c_Column != 'z'){ //normal pieces
         glColor3f(1,1,1);
         glScalef(0.8,0.8,0.8);
-        glTranslatef(x,-1.25+y,z);
+        glTranslatef(x,-1.25,z);
     }else if(c_Column == 'z'){ //board
-        glColor3f(0.5,0.5,1);
+        glColor4ub(238,221,187,255);
         glTranslatef(0,-2,0);
     }
     glBindTexture(GL_TEXTURE_2D,texture[textureNumber]);
@@ -292,13 +267,8 @@ void Piece::draw(){
 
 void Knight::draw(){
     glPushMatrix();
-    //glRotatef(angle,0,1,0);
     float x = 0.0f;
-    float y = 0.0f;
     float z = 0.0f;
-    if(picked){
-        //y = 2.0f;
-    }
     switch(c_Column){
         case 'a':
             x = -8.8f;
@@ -325,35 +295,14 @@ void Knight::draw(){
             x = 8.7f;
             break;
     };
-    switch(c_Row){
-        case 1:
-            z = 8.8f;
-            break;
-        case 2:
-            z = 6.3f;
-            break;
-        case 3:
-            z = 3.8f;
-            break;
-        case 4:
-            z = 1.3f;
-            break;
-        case 5:
-            z = -1.2f;
-            break;
-        case 6:
-            z = -3.7f;
-            break;
-        case 7:
-            z = -6.2f;
-            break;
-        case 8:
-            z = -8.7f;
-            break;
-    };
+    for(int i = 1; i <= 8; i++){
+        if(c_Row == i){
+            z = 11.3-(2.5*i);
+        }
+    }
     glColor3f(1,1,1);
     glScalef(0.8,0.8,0.8);
-    glTranslatef(-7.3+x,-2.25+y,-0.8+z);
+    glTranslatef(-7.3+x,-2.25,-0.8+z);
     glBindTexture(GL_TEXTURE_2D,texture[textureNumber]);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
