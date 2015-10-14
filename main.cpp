@@ -1,14 +1,9 @@
 #include "pieces.h"
 
-
-float data[] = {
-    0,1,0,
-    -1,-1,0,
-    1,-1,0
-};
 float lpos[4] = {1,0.5,1,0};
 int screen_width = 600, screen_height = 600;
 
+//All of the piece variables
 King* white_king;
 King* black_king;
 Queen* white_queen;
@@ -44,8 +39,8 @@ Pawn* black_pawn_8;
 Piece* board;
 Piece* selected_piece = NULL;
 extern std::vector<Piece*> pieces;
-float y_level = 0.0f;
 
+//helper function to print grid 2d array variable
 void print_grid_pieces(void){
     for(int row = 0; row <= 7; row++){
         for(int col = 0; col <= 7; col++){
@@ -167,14 +162,6 @@ void specialKeys(int key, int x, int y){
             printf("shaders freed\n");
             exit(0);
             break;
-        case GLUT_KEY_UP:
-            y_level += 0.1f;
-            printf("y_level = %f\n",y_level);
-            break;
-        case GLUT_KEY_DOWN:
-            y_level -= 0.01f;
-            printf("y_level = %f\n",y_level);
-            break;
     }
 }
 
@@ -186,6 +173,7 @@ void initGL(void){
     glLineWidth(10);
 }
 
+//calls pick function on the piece at the passed in position
 void pickPiece(int col, int row){
     for(int i = 0; i<= pieces.size()-1; i++){
         Piece* piece = pieces.at(i);
@@ -200,6 +188,7 @@ void pickPiece(int col, int row){
     }
 }
 
+//swaps turns from white to black or black to white
 void swap_turns(void){
     if(gamestate == WHITE_TURN){
         gamestate = BLACK_TURN;
@@ -208,6 +197,7 @@ void swap_turns(void){
     }
 }
 
+//processes which piece is clicked or which tile is clicked
 void list_hits(GLint hits, GLuint *names){
     for(int i = 0; i <= pieces.size()-1; i++){
         pieces.at(i)->unpick();
@@ -246,6 +236,7 @@ void list_hits(GLint hits, GLuint *names){
     pickPiece(grid_col,grid_row);
 }
 
+//sets up gl select mode
 void gl_select(int x, int y){
     GLuint buff[64] = {0};
     GLint hits, view[4];
@@ -294,14 +285,14 @@ int main(int argc, char **argv){
     glutInitWindowSize(screen_width,screen_height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glutInitContextVersion(2, 1);
-    glutCreateWindow("swag");
+    glutCreateWindow("Chess 3D");
 
     glewExperimental = GL_TRUE;
     glewInit();
     initGL();
     initDLs();
     loadPieces();
-	//setShaders();
+    //setShaders();
     gamestate = WHITE_TURN;
 
     glClearColor(0.8, 0.8, 1, 1);
