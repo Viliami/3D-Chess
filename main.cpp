@@ -217,10 +217,15 @@ void list_hits(GLint hits, GLuint *names){
             break;
         }
         if(name >= 101){
+            printf("Grid clicked\n");
             name -= 100;
             grid_row = 9-(name%8);
+            if(grid_row == 9){
+                grid_row = 1;
+            }
             grid_col = ceil((float)name/8.0f);
             grid_column = column[grid_col-1];
+            printf("row = %i col = %i name = %i\n",grid_row,grid_col,name);
         }
     }
     if(move_pressed){
@@ -295,7 +300,7 @@ int main(int argc, char **argv){
     //setShaders();
     gamestate = WHITE_TURN;
 
-    glClearColor(0.8, 0.8, 1, 1);
+    glClearColor(1, 1, 1, 1);
     glutDisplayFunc(draw);
     glutIdleFunc(draw);
     glutReshapeFunc(resize);
