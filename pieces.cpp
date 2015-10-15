@@ -388,18 +388,12 @@ void Pawn::listMoves(void){
         }
         //en passant
         if(grid_pieces[c_Row-1][c_Col-2] == WHITE){
-            printf("possible en passant\n");
-            printf("en passant = %s\n",piece_at(c_Col-1,c_Row)->en_passant?"True":"False");
             if(piece_at(c_Col-1,c_Row)->value == 1 && piece_at(c_Col-1,c_Row)->en_passant){ //if it's a pawn after first move
-                printf("en passant\n");
                 highlight_tile(c_Col-1, c_Row-1, 4, true);
             }
         }
         if(grid_pieces[c_Row-1][c_Col] == WHITE){
-            printf("possible en passant\n");
-            printf("en passant = %s\n",piece_at(c_Col+1,c_Row)->en_passant?"True":"False");
             if(piece_at(c_Col+1,c_Row)->value == 1 && piece_at(c_Col+1,c_Row)->en_passant){
-                printf("en passant\n");
                 highlight_tile(c_Col+1, c_Row-1, 4, true);
             }
         }
@@ -417,18 +411,12 @@ void Pawn::listMoves(void){
         }
         //en passant
         if(grid_pieces[c_Row-1][c_Col-2] == BLACK){
-            printf("possible en passant\n");
-            printf("en passant = %s\n",piece_at(c_Col-1,c_Row)->en_passant?"True":"False");
             if(piece_at(c_Col-1, c_Row)->value == 1 && piece_at(c_Col-1,c_Row)->en_passant){
-                printf("en passant\n");
                 highlight_tile(c_Col-1, c_Row+1, 4, true);
             }
         }
         if(grid_pieces[c_Row-1][c_Col] == BLACK){
-            printf("possible en passant\n");
-            printf("en passant = %s\nvalue = %i\n",piece_at(c_Col+1,c_Row)->en_passant?"True":"False",piece_at(c_Col+1, c_Row)->value);
             if(piece_at(c_Col+1, c_Row)->value == 1 && piece_at(c_Col+1,c_Row)->en_passant){
-                printf("en passant\n");
                 highlight_tile(c_Col+1, c_Row+1, 4, true);
             }
         }
@@ -473,6 +461,14 @@ void King::listMoves(void){
     highlight_tile(c_Col+1,c_Row-1,5);
     highlight_tile(c_Col-1,c_Row+1,6);
     highlight_tile(c_Col-1,c_Row-1,7);
+    if(!has_moved){
+        if(!checkSquare(c_Col-3,c_Row) && !checkSquare(c_Col-2,c_Row) && !checkSquare(c_Col-1,c_Row)){
+            highlight_tile(c_Col-2,c_Row,8);
+        }
+        if(!checkSquare(c_Col+2,c_Row) && !checkSquare(c_Col+1,c_Row)){
+            highlight_tile(c_Col+2,c_Row,9);
+        }
+    }
 }
 
 void Queen::listMoves(void){
@@ -493,6 +489,7 @@ void Piece::move(unsigned int col, unsigned int row){
     c_Row = row;
     c_Column = column[col-1];
     grid_pieces[c_Row-1][c_Col-1] = color;
+    has_moved = true;
 }
 
 void Pawn::move(unsigned int col, unsigned int row){
@@ -514,6 +511,7 @@ void Pawn::move(unsigned int col, unsigned int row){
         en_passant = true;
         printf("1st move\n");
     }
+    has_moved = true;
 }
 
 void Piece::move(char col, unsigned int row){
@@ -529,4 +527,25 @@ void Piece::move(char col, unsigned int row){
     for(int i = 0; i <= pieces.size()-1; i ++){
         pieces.at(i)->en_passant = false;
     }
+    has_moved = true;
+}
+
+void King::move(unsigned int col, unsigned int row){
+    grid_pieces[c_Row-1][c_Col-1] = 0;
+    if(c_Col-col == 2){
+        printf("castling to the left\n");
+        if(color == WHITE){
+            piece_at(1,1)->move((unsigned int)4,(unsigned int)1);
+        }
+    }else if(c_Col-col == -2){
+        printf("castling to the right\n");
+        if(color == WHITE){
+            piece_at(8,1)->move((unsigned int)6,(unsigned int)1);
+        }
+    }
+    c_Col = col;
+    c_Row = row;
+    c_Column = column[col-1];
+    grid_pieces[c_Row-1][c_Col-1] = color;
+    has_moved = true;
 }
