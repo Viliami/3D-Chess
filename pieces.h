@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <stdio.h>
 #include "textfile.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -8,7 +7,6 @@
 #include <SOIL/SOIL.h>
 #include <iostream>
 #include <vector>
-#include <math.h>
 #include <algorithm>
 
 #define A 0
@@ -79,7 +77,7 @@ class Piece{
         char c_Column;
         GLfloat *vertexArray,*normalArray,*uvArray,angle;
         float var_swag;
-	    bool picked = false, en_passant = false;
+	    bool picked = false, en_passant = false, has_moved = false;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){};
@@ -105,6 +103,7 @@ class King : public Piece{
         };
         ~King();
         void listMoves(void);
+        void move(unsigned int col, unsigned int row);
 };
 
 class Queen : public Piece{
