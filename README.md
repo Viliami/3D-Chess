@@ -35,3 +35,9 @@ sudo apt-get install libglew1.6-dev
 sudo apt-get install libassimp-dev
 sudo apt-get install libsoil-dev
 ```
+
+Models used in this game are from 3dvia.com and are all made by user jdelrio
+
+http://www.3dvia.com/users/jdelrio
+
+They are used under the following license: http://creativecommons.org/licenses/by/2.5/
