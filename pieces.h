@@ -159,4 +159,5 @@ class Pawn : public Piece{
         ~Pawn();
         void listMoves(void);
         void move(unsigned int col, unsigned int row);
+        void check_promotion(void);
 };

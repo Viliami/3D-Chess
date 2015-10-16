@@ -1,7 +1,7 @@
 #include "pieces.h"
 
 float lpos[4] = {1,0.5,1,0};
-int screen_width = 600, screen_height = 600;
+int screen_width = 800,screen_height = 800;
 
 //All of the piece variables
 King* white_king;
@@ -173,7 +173,7 @@ void initGL(void){
     glLineWidth(10);
 }
 
-//calls pick function on the piece at the passed in position
+//calls pick function on the piece at the position specified
 void pickPiece(int col, int row){
     for(int i = 0; i<= pieces.size()-1; i++){
         Piece* piece = pieces.at(i);
@@ -197,7 +197,7 @@ void swap_turns(void){
     }
 }
 
-//processes which piece is clicked or which tile is clicked
+//processes which piece is clicked and which tile is clicked
 void list_hits(GLint hits, GLuint *names){
     for(int i = 0; i <= pieces.size()-1; i++){
         pieces.at(i)->unpick();
