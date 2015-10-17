@@ -20,7 +20,7 @@ Piece* piece_at(int col, int row){
 }
 
 void remove_piece(int col, int row){
-    std::vector<Piece*>::iterator it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
+    auto it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
     if(it != pieces.end()){
         pieces.erase(it);
         grid_pieces[row-1][col-1] = 0;
@@ -189,17 +189,16 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
         }
     }
     c_Column = col;
-    if(row == 1 || row == 2){
-        color = WHITE;
-    }else if(row == 7 || row == 8){
+    if(strstr(textureFile,"black")){
+        printf("black\n");
         color = BLACK;
+        grid_pieces[c_Row-1][c_Col-1] = color;
+    }else if(strstr(textureFile,"white")){
+        printf("white\n");
+        color = WHITE;
+        grid_pieces[c_Row-1][c_Col-1] = color;
     }else{
         color = -1;
-    }
-    if(color == BLACK){
-        grid_pieces[c_Row-1][c_Col-1] = BLACK;
-    }else if(color == WHITE){
-        grid_pieces[c_Row-1][c_Col-1] = WHITE;
     }
 }
 
@@ -329,6 +328,15 @@ bool checkSquare(int col, int row){
     return false;
 }
 
+int get_index(int col, int row){
+    auto it = std::find(pieces.begin(), pieces.end(), piece_at(col,row));
+    if (it == pieces.end()){
+        return -1;
+    }else{
+        return std::distance(pieces.begin(), it);
+    }
+}
+
 void highlight_tile(int col, int row,unsigned int tile, bool captured_mode = false){
     if((col <= 8 && row <= 8 && col > 0 && row > 0) && ((gamestate == WHITE_TURN && grid_pieces[row-1][col-1] != WHITE) ||(gamestate == BLACK_TURN && grid_pieces[row-1][col-1] != BLACK))){
         highlighted_tiles[tile][0] = row;
@@ -357,7 +365,7 @@ void Piece::createMoveList(int col_inc, int row_inc, int min_array){ //column in
     for(int i = 0; i < 7; i++){
         c = c_Col-(col_inc*(i+1));
         r = c_Row-(row_inc*(i+1));
-        if(checkSquare(c,r)){
+        if(checkSquare(c,r)){ //if the square has a piece in it
             if(!((grid_pieces[r-1][c-1] == BLACK && gamestate == BLACK_TURN) || (grid_pieces[r-1][c-1] == WHITE && gamestate == WHITE_TURN))){
                 highlight_tile(c,r,min_array+i,true);
             }
@@ -484,7 +492,18 @@ void Queen::listMoves(void){
 }
 
 void Pawn::check_promotion(void){
-    
+    Queen* temp = NULL;
+    int index = get_index(c_Col,c_Row);
+    if(index < 0)
+        return;
+    if(color == BLACK && c_Row == 1){
+        temp = new Queen("data/models/queen.dae","data/textures/black_queen.jpg",3,c_Column,c_Row);
+        pieces.at(index) = temp;
+    }else if(color == WHITE && c_Row == 8){
+        temp = new Queen("data/models/queen.dae","data/textures/white_queen.jpg",2,c_Column,c_Row);
+        pieces.at(index) = temp;
+    }
+    printf("promoted\n");
 }
 
 void Piece::move(unsigned int col, unsigned int row){

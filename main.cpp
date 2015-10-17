@@ -175,15 +175,14 @@ void initGL(void){
 
 //calls pick function on the piece at the position specified
 void pickPiece(int col, int row){
-    for(int i = 0; i<= pieces.size()-1; i++){
-        Piece* piece = pieces.at(i);
-        if(piece->c_Row == row && piece->c_Col == col && ((piece->color == BLACK && gamestate == BLACK_TURN) || (piece->color == WHITE && gamestate == WHITE_TURN))){
+    Piece* piece = piece_at(col,row);
+    if(piece != NULL){
+        if((piece->color == BLACK && gamestate == BLACK_TURN) || (piece->color == WHITE && gamestate == WHITE_TURN)){
             for(int j = 0; j <= pieces.size()-1; j++){
                 pieces.at(j)->unpick();
             }
             piece->pick();
             selected_piece = piece;
-            break;
         }
     }
 }
@@ -205,13 +204,13 @@ void list_hits(GLint hits, GLuint *names){
     bool move_pressed = false;
     for (int i = 0; i < hits; i++){
         int name = (GLubyte)names[i*4+3];
-	    if(name >= 1 && name <= 16 && gamestate == WHITE_TURN){
+	    /*if(name >= 1 && name <= 16 && gamestate == WHITE_TURN){
 		    pieces[name-1]->pick();
 		    selected_piece = pieces[name-1];
 	    }else if(name >= 17 && name <= 32 && gamestate == BLACK_TURN){
 		    pieces[name-1]->pick();
 		    selected_piece = pieces[name-1];
-	    }
+	    }*/
         if(name == 165){
             move_pressed = true;
             break;
