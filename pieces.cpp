@@ -9,7 +9,7 @@ int highlighted_tiles[56][2] = {0};
 int grid_pieces[8][8] = {0}; 
 GAMESTATE gamestate;
 char column[9] = {'a','b','c','d','e','f','g','h','z'};
-std::vector<Piece*> pieces;
+std::vector<Piece*> pieces,side_pieces;
 
 Piece* piece_at(int col, int row){
     for(int i = 0; i <= pieces.size()-1; i++){
@@ -20,7 +20,9 @@ Piece* piece_at(int col, int row){
 }
 
 void remove_piece(int col, int row){
-    auto it = std::find(pieces.begin(), pieces.end(), piece_at(col, row));
+    Piece* temp = piece_at(col, row);
+    auto it = std::find(pieces.begin(), pieces.end(), temp);
+    side_pieces.push_back(temp);
     if(it != pieces.end()){
         pieces.erase(it);
         grid_pieces[row-1][col-1] = 0;
@@ -200,40 +202,44 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
     }
 }
 
-void Piece::draw(){
+void Piece::draw(bool side_piece, float pX, float pY){
     glPushMatrix();
-    float x = 0.0f;
-    float z = 0.0f;
-    switch(c_Column){
-        case 'a':
-            x = -8.8f;
-            break;
-        case 'b':
-            x = -6.3f;
-            break;
-        case 'c':
-            x = -3.8f;
-            break;
-        case 'd':
-            x = -1.3f;
-            break;
-        case 'e':
-            x = 1.2f;
-            break;
-        case 'f':
-            x = 3.7f;
-            break;
-        case 'g':
-            x = 6.2f;
-            break;
-        case 'h':
-            x = 8.7f;
-            break;
-    };
-    for(int i = 1; i <= 8; i++){
-        if(c_Row == i){
-            z = 11.3-(2.5*i);
+    float x = pX;
+    float z = pY;
+    if(!side_piece){
+        switch(c_Column){
+            case 'a':
+                x = -8.8f;
+                break;
+            case 'b':
+                x = -6.3f;
+                break;
+            case 'c':
+                x = -3.8f;
+                break;
+            case 'd':
+                x = -1.3f;
+                break;
+            case 'e':
+                x = 1.2f;
+                break;
+            case 'f':
+                x = 3.7f;
+                break;
+            case 'g':
+                x = 6.2f;
+                break;
+            case 'h':
+                x = 8.7f;
+                break;
+        };
+        for(int i = 1; i <= 8; i++){
+            if(c_Row == i){
+                z = 11.3-(2.5*i);
+            }
         }
+    }else{
+        
     }
     if(c_Column != 'z'){ //normal pieces
         glColor3f(1,1,1);
@@ -262,40 +268,44 @@ void Piece::draw(){
     angle+=1.0f;
 }
 
-void Knight::draw(){
+void Knight::draw(bool side_piece, float pX, float pY){
     glPushMatrix();
-    float x = 0.0f;
-    float z = 0.0f;
-    switch(c_Column){
-        case 'a':
-            x = -8.8f;
-            break;
-        case 'b':
-            x = -6.3f;
-            break;
-        case 'c':
-            x = -3.8f;
-            break;
-        case 'd':
-            x = -1.3f;
-            break;
-        case 'e':
-            x = 1.2f;
-            break;
-        case 'f':
-            x = 3.7f;
-            break;
-        case 'g':
-            x = 6.2f;
-            break;
-        case 'h':
-            x = 8.7f;
-            break;
-    };
-    for(int i = 1; i <= 8; i++){
-        if(c_Row == i){
-            z = 11.3-(2.5*i);
+    float x = pX;
+    float z = pY;
+    if(!side_piece){
+        switch(c_Column){
+            case 'a':
+                x = -8.8f;
+                break;
+            case 'b':
+                x = -6.3f;
+                break;
+            case 'c':
+                x = -3.8f;
+                break;
+            case 'd':
+                x = -1.3f;
+                break;
+            case 'e':
+                x = 1.2f;
+                break;
+            case 'f':
+                x = 3.7f;
+                break;
+            case 'g':
+                x = 6.2f;
+                break;
+            case 'h':
+                x = 8.7f;
+                break;
+        };
+        for(int i = 1; i <= 8; i++){
+            if(c_Row == i){
+                z = 11.3-(2.5*i);
+            }
         }
+    }else{
+        
     }
     glColor3f(1,1,1);
     glScalef(0.8,0.8,0.8);

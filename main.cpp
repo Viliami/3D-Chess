@@ -99,11 +99,21 @@ void drawBoard(){
 }
 
 void drawPieces(){
-    for(int i = 0; i <= pieces.size()-1; i++){
+    for(int i = 0; i <= pieces.size()-1; i++){ //draw pieces on the board
         glLoadName(1+i);
         pieces.at(i)->draw();
     }
-
+    int white_counter = 0, black_counter = 0;
+    for(int j = 0; j < side_pieces.size(); j++){ //draw dead pieces on the side
+        Piece* temp = side_pieces.at(j);
+        if(temp->color == BLACK){
+            temp->draw(true, -11.3, 8.8-(2.5*black_counter));
+            black_counter++;
+        }else if(temp->color == WHITE){
+            temp->draw(true, 11.2, 8.8-(2.5*white_counter));
+            white_counter++;
+        }
+    }
 }
 
 void draw(void){

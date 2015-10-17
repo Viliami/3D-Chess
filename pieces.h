@@ -81,7 +81,7 @@ class Piece{
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){};
-        virtual void draw();
+        virtual void draw(bool side_piece = false, float x = 0.0f, float y = 0.0f);
 	    virtual void listMoves(void);
         virtual void move(unsigned int col, unsigned int row);
         virtual void move(char col, unsigned int row);
@@ -90,7 +90,7 @@ class Piece{
         void createMoveList(int col_inc, int row_inc, int min_array);
 };
 
-extern std::vector<Piece*> pieces;
+extern std::vector<Piece*> pieces,side_pieces;
 
 extern Piece* piece_at(int col, int row);
 extern void remove_piece(int col, int row);
@@ -134,7 +134,7 @@ class Knight : public Piece{
             var_swag = 0.0f;
         };
         ~Knight();
-        void draw();
+        void draw(bool side_piece = false, float x = 0.0f, float y = 0.0f);
         void listMoves(void);
 };
 
