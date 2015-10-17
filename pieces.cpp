@@ -190,11 +190,9 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
     }
     c_Column = col;
     if(strstr(textureFile,"black")){
-        printf("black\n");
         color = BLACK;
         grid_pieces[c_Row-1][c_Col-1] = color;
     }else if(strstr(textureFile,"white")){
-        printf("white\n");
         color = WHITE;
         grid_pieces[c_Row-1][c_Col-1] = color;
     }else{

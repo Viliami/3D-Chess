@@ -216,7 +216,6 @@ void list_hits(GLint hits, GLuint *names){
             break;
         }
         if(name >= 101){
-            printf("Grid clicked\n");
             name -= 100;
             grid_row = 9-(name%8);
             if(grid_row == 9){
