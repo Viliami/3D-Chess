@@ -207,39 +207,8 @@ void Piece::draw(bool side_piece, float pX, float pY){
     float x = pX;
     float z = pY;
     if(!side_piece){
-        switch(c_Column){
-            case 'a':
-                x = -8.8f;
-                break;
-            case 'b':
-                x = -6.3f;
-                break;
-            case 'c':
-                x = -3.8f;
-                break;
-            case 'd':
-                x = -1.3f;
-                break;
-            case 'e':
-                x = 1.2f;
-                break;
-            case 'f':
-                x = 3.7f;
-                break;
-            case 'g':
-                x = 6.2f;
-                break;
-            case 'h':
-                x = 8.7f;
-                break;
-        };
-        for(int i = 1; i <= 8; i++){
-            if(c_Row == i){
-                z = 11.3-(2.5*i);
-            }
-        }
-    }else{
-        
+        x = -11.3+(2.5*c_Col);
+        z = 11.3-(2.5*c_Row);
     }
     if(c_Column != 'z'){ //normal pieces
         glColor3f(1,1,1);
@@ -273,39 +242,8 @@ void Knight::draw(bool side_piece, float pX, float pY){
     float x = pX;
     float z = pY;
     if(!side_piece){
-        switch(c_Column){
-            case 'a':
-                x = -8.8f;
-                break;
-            case 'b':
-                x = -6.3f;
-                break;
-            case 'c':
-                x = -3.8f;
-                break;
-            case 'd':
-                x = -1.3f;
-                break;
-            case 'e':
-                x = 1.2f;
-                break;
-            case 'f':
-                x = 3.7f;
-                break;
-            case 'g':
-                x = 6.2f;
-                break;
-            case 'h':
-                x = 8.7f;
-                break;
-        };
-        for(int i = 1; i <= 8; i++){
-            if(c_Row == i){
-                z = 11.3-(2.5*i);
-            }
-        }
-    }else{
-        
+        x = -11.3+(2.5*c_Col);
+        z = 11.3-(2.5*c_Row);
     }
     glColor3f(1,1,1);
     glScalef(0.8,0.8,0.8);
