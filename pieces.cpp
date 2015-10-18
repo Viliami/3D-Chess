@@ -202,10 +202,26 @@ Piece::Piece(const char* modelFile, const char* textureFile,int textureNum,char 
     }
 }
 
-void Piece::draw(bool side_piece, float pX, float pY){
+void Piece::render(void){
+    glBindTexture(GL_TEXTURE_2D,texture[textureNumber]);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glVertexPointer(3,GL_FLOAT,0,vertexArray);
+    glNormalPointer(GL_FLOAT,0,normalArray);
+
+    glTexCoordPointer(2,GL_FLOAT,0,uvArray);
+
+    glDrawArrays(GL_TRIANGLES,0,numVerts);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void Piece::draw(bool side_piece, float pX, float pZ){
+    float x = pX, z = pZ;
     glPushMatrix();
-    float x = pX;
-    float z = pY;
+
     if(!side_piece){
         x = -11.3+(2.5*c_Col);
         z = 11.3-(2.5*c_Row);
@@ -218,29 +234,15 @@ void Piece::draw(bool side_piece, float pX, float pY){
         glColor4ub(238,221,187,255);
         glTranslatef(0,-2,0);
     }
-    glBindTexture(GL_TEXTURE_2D,texture[textureNumber]);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glVertexPointer(3,GL_FLOAT,0,vertexArray);
-    glNormalPointer(GL_FLOAT,0,normalArray);
-            
-    glClientActiveTexture(GL_TEXTURE0);
-    glTexCoordPointer(2,GL_FLOAT,0,uvArray);
-
-    glDrawArrays(GL_TRIANGLES,0,numVerts);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    render();
 
     glPopMatrix();
-    angle+=1.0f;
 }
 
-void Knight::draw(bool side_piece, float pX, float pY){
+void Knight::draw(bool side_piece, float pX, float pZ){
+    float x = pX, z = pZ;
     glPushMatrix();
-    float x = pX;
-    float z = pY;
+
     if(!side_piece){
         x = -11.3+(2.5*c_Col);
         z = 11.3-(2.5*c_Row);
@@ -248,23 +250,9 @@ void Knight::draw(bool side_piece, float pX, float pY){
     glColor3f(1,1,1);
     glScalef(0.8,0.8,0.8);
     glTranslatef(-7.3+x,-2.25,-0.8+z);
-    glBindTexture(GL_TEXTURE_2D,texture[textureNumber]);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glVertexPointer(3,GL_FLOAT,0,vertexArray);
-    glNormalPointer(GL_FLOAT,0,normalArray);
-            
-    //glClientActiveTexture(GL_TEXTURE0);
-    glTexCoordPointer(2,GL_FLOAT,0,uvArray);
-
-    glDrawArrays(GL_TRIANGLES,0,numVerts);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    render();
 
     glPopMatrix();
-    angle+=1.0f;
 }
 
 bool checkSquare(int col, int row){
@@ -468,7 +456,7 @@ void Pawn::move(unsigned int col, unsigned int row){
             remove_piece(col,row-1);
         }
     }else if(color == BLACK){
-        if(grid_pieces[row][col-1] == BLACK && piece_at(col,row+1)->en_passant){
+        if(grid_pieces[row][col-1] == WHITE && piece_at(col,row+1)->en_passant){
             remove_piece(col,row+1);
         }
     }

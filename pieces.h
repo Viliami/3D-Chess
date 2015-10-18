@@ -75,19 +75,22 @@ class Piece{
     public:
         int c_Row, c_Col, color, textureNumber, value, numVerts; //c_Row = current row c_Col = current column
         char c_Column;
-        GLfloat *vertexArray,*normalArray,*uvArray,angle;
+        GLfloat *vertexArray,*normalArray,*uvArray;
         float var_swag;
 	    bool picked = false, en_passant = false, has_moved = false;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
         ~Piece(){};
+
         virtual void draw(bool side_piece = false, float x = 0.0f, float y = 0.0f);
 	    virtual void listMoves(void);
         virtual void move(unsigned int col, unsigned int row);
         virtual void move(char col, unsigned int row);
+
 	    void pick(void);
 	    void unpick(void);
         void createMoveList(int col_inc, int row_inc, int min_array);
+        void render(void);
 };
 
 extern std::vector<Piece*> pieces,side_pieces;

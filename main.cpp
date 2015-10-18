@@ -316,7 +316,7 @@ int main(int argc, char **argv){
     //setShaders();
     gamestate = WHITE_TURN;
 
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0.8, 0.8, 0.8, 1);
     glutDisplayFunc(draw);
     glutIdleFunc(draw);
     glutReshapeFunc(resize);
