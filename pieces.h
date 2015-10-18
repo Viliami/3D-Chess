@@ -80,7 +80,7 @@ class Piece{
 	    bool picked = false, en_passant = false, has_moved = false;
 
         explicit Piece(const char* modelFile, const char* textureFile,int textureNum,char col, int row);
-        ~Piece(){};
+        ~Piece(){free(vertexArray);free(normalArray);free(uvArray);};
 
         virtual void draw(bool side_piece = false, float x = 0.0f, float y = 0.0f);
 	    virtual void listMoves(void);
