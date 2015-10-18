@@ -1,44 +1,11 @@
 #include "pieces.h"
 
 float lpos[4] = {1,0.5,1,0};
-int screen_width = 800,screen_height = 800;
+int screen_width = 850,screen_height = 850;
 
-//All of the piece variables
-King* white_king;
-King* black_king;
-Queen* white_queen;
-Queen* black_queen;
-Rook* white_rook_1;
-Rook* white_rook_2;
-Rook* black_rook_1;
-Rook* black_rook_2;
-Knight* white_knight_1;
-Knight* white_knight_2;
-Knight* black_knight_1;
-Knight* black_knight_2;
-Bishop* white_bishop_1;
-Bishop* white_bishop_2;
-Bishop* black_bishop_1;
-Bishop* black_bishop_2;
-Pawn* white_pawn_1;
-Pawn* white_pawn_2;
-Pawn* white_pawn_3;
-Pawn* white_pawn_4;
-Pawn* white_pawn_5;
-Pawn* white_pawn_6;
-Pawn* white_pawn_7;
-Pawn* white_pawn_8;
-Pawn* black_pawn_1;
-Pawn* black_pawn_2;
-Pawn* black_pawn_3;
-Pawn* black_pawn_4;
-Pawn* black_pawn_5;
-Pawn* black_pawn_6;
-Pawn* black_pawn_7;
-Pawn* black_pawn_8;
+//Some piece variables
 Piece* board;
 Piece* selected_piece = NULL;
-extern std::vector<Piece*> pieces;
 
 //helper function to print grid 2d array variable
 void print_grid_pieces(void){
@@ -57,41 +24,25 @@ void print_grid_pieces(void){
 }
 
 void loadPieces(){
-    white_king = new King("data/models/king.dae","data/textures/white_king.jpg",0,'e',1);
-    black_king = new King("data/models/king.dae","data/textures/black_king.jpg",1,'e',8);
-    white_queen = new Queen("data/models/queen.dae","data/textures/white_queen.jpg",2,'d',1);
-    black_queen = new Queen("data/models/queen.dae","data/textures/black_queen.jpg",3,'d',8);
-    white_rook_1 = new Rook("data/models/rook.dae","data/textures/white_rook.jpg",4,'a',1);
-    white_rook_2 = new Rook("data/models/rook.dae","data/textures/white_rook.jpg",4,'h',1);
-    black_rook_1 = new Rook("data/models/rook.dae","data/textures/black_rook.jpg",5,'a',8);
-    black_rook_2 = new Rook("data/models/rook.dae","data/textures/black_rook.jpg",5,'h',8);
-    white_bishop_1 = new Bishop("data/models/bishop.dae","data/textures/white_bishop.jpg",6,'c',1);
-    white_bishop_2 = new Bishop("data/models/bishop.dae","data/textures/white_bishop.jpg",6,'f',1);
-    black_bishop_1 = new Bishop("data/models/bishop.dae","data/textures/black_bishop.jpg",7,'c',8);
-    black_bishop_2 = new Bishop("data/models/bishop.dae","data/textures/black_bishop.jpg",7,'f',8);
-    white_knight_1 = new Knight("data/models/knight.dae","data/textures/white_knight.jpg",8,'b',1);
-    white_knight_2 = new Knight("data/models/knight.dae","data/textures/white_knight.jpg",8,'g',1);
-    black_knight_1 = new Knight("data/models/knight.dae","data/textures/black_knight.jpg",9,'b',8);
-    black_knight_2 = new Knight("data/models/knight.dae","data/textures/black_knight.jpg",9,'g',8);
-    white_pawn_1 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'a',2);
-    white_pawn_2 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'b',2);
-    white_pawn_3 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'c',2);
-    white_pawn_4 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'d',2);
-    white_pawn_5 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'e',2);
-    white_pawn_6 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'f',2);
-    white_pawn_7 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'g',2);
-    white_pawn_8 = new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,'h',2);
-    black_pawn_1 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'a',7);
-    black_pawn_2 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'b',7);
-    black_pawn_3 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'c',7);
-    black_pawn_4 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'d',7);
-    black_pawn_5 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'e',7);
-    black_pawn_6 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'f',7);
-    black_pawn_7 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'g',7);
-    black_pawn_8 = new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,'h',7);
+    pieces.push_back(new King("data/models/king.dae","data/textures/white_king.jpg",0,'e',1));
+    pieces.push_back(new King("data/models/king.dae","data/textures/black_king.jpg",1,'e',8));
+    pieces.push_back(new Queen("data/models/queen.dae","data/textures/white_queen.jpg",2,'d',1));
+    pieces.push_back(new Queen("data/models/queen.dae","data/textures/black_queen.jpg",3,'d',8));
+
+    for(int i = 0; i <= 1; i++){
+        pieces.push_back(new Rook("data/models/rook.dae","data/textures/white_rook.jpg",4,column[i*7],1));           //white rooks
+        pieces.push_back(new Rook("data/models/rook.dae","data/textures/black_rook.jpg",5,column[i*7],8));           //black rooks
+        pieces.push_back(new Bishop("data/models/bishop.dae","data/textures/white_bishop.jpg",6,column[(i*3)+2],1)); //white bishops
+        pieces.push_back(new Bishop("data/models/bishop.dae","data/textures/black_bishop.jpg",7,column[(i*3)+2],8)); //black bishops
+        pieces.push_back(new Knight("data/models/knight.dae","data/textures/white_knight.jpg",8,column[(i*5)+1],1)); //white knights
+        pieces.push_back(new Knight("data/models/knight.dae","data/textures/black_knight.jpg",9,column[(i*5)+1],8)); //black knights
+    }
+    for(int i = 0; i <= 7; i++){
+        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,column[i],2));
+        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,column[i],7));
+    }
     board = new Piece("data/models/board.dae","data/textures/board.jpg",12,'z',0);
-    pieces.push_back(white_rook_1);pieces.push_back(white_rook_2);pieces.push_back(white_knight_1);pieces.push_back(white_knight_2);pieces.push_back(white_bishop_1);pieces.push_back(white_bishop_2);pieces.push_back(white_queen);pieces.push_back(white_king);pieces.push_back(white_pawn_1);pieces.push_back(white_pawn_2);pieces.push_back(white_pawn_3);pieces.push_back(white_pawn_4);pieces.push_back(white_pawn_5);pieces.push_back(white_pawn_6);pieces.push_back(white_pawn_7);pieces.push_back(white_pawn_8);pieces.push_back(black_rook_1);pieces.push_back(black_rook_2);pieces.push_back(black_knight_1);pieces.push_back(black_knight_2);pieces.push_back(black_bishop_1);pieces.push_back(black_bishop_2);pieces.push_back(black_queen);pieces.push_back(black_king);pieces.push_back(black_pawn_1);pieces.push_back(black_pawn_2);pieces.push_back(black_pawn_3);pieces.push_back(black_pawn_4);pieces.push_back(black_pawn_5);pieces.push_back(black_pawn_6);pieces.push_back(black_pawn_7);pieces.push_back(black_pawn_8);
-    printf("loaded\n");
+    printf("loaded starting pieces\n");
 }
 
 void drawBoard(){
