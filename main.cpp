@@ -38,10 +38,10 @@ void loadPieces(){
         pieces.push_back(new Knight("data/models/knight.dae","data/textures/black_knight.jpg",9,column[(i*5)+1],8)); //black knights
     }
     for(int i = 0; i <= 7; i++){
-        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,column[i],2));
-        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,column[i],7));
+        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/white_pawn.jpg",10,column[i],2));            //white pawns
+        pieces.push_back(new Pawn("data/models/pawn.dae","data/textures/black_pawn.jpg",11,column[i],7));            //black pawns
     }
-    board = new Piece("data/models/board.dae","data/textures/board.jpg",12,'z',0);
+    board = new Piece("data/models/board.dae","data/textures/board.jpg",12,'z',0);                                   //chess board
     printf("loaded starting pieces\n");
 }
 
@@ -87,7 +87,6 @@ void draw(void){
     drawBoard();
     drawGrid();
     drawPieces();
-    //print_grid_pieces();
 
     glutSwapBuffers();
 }
@@ -113,6 +112,9 @@ void keyEvents(unsigned char key, int x, int y){
             glDeleteShader(v);
             glDeleteShader(f);
             glDeleteProgram(p);
+            for(int i = 0; i < pieces.size(); i++){
+                free(pieces.at(i));
+            }
             printf("shaders freed\n");
             exit(0);
             break;
@@ -121,17 +123,7 @@ void keyEvents(unsigned char key, int x, int y){
 }
 
 void specialKeys(int key, int x, int y){
-    switch(key){
-        case GLUT_KEY_F1:
-            glDetachShader(p,v);
-            glDetachShader(p,f);
-            glDeleteShader(v);
-            glDeleteShader(f);
-            glDeleteProgram(p);
-            printf("shaders freed\n");
-            exit(0);
-            break;
-    }
+    //no events to handle here yet...
 }
 
 void initGL(void){
@@ -173,13 +165,6 @@ void list_hits(GLint hits, GLuint *names){
     bool move_pressed = false;
     for (int i = 0; i < hits; i++){
         int name = (GLubyte)names[i*4+3];
-	    /*if(name >= 1 && name <= 16 && gamestate == WHITE_TURN){
-		    pieces[name-1]->pick();
-		    selected_piece = pieces[name-1];
-	    }else if(name >= 17 && name <= 32 && gamestate == BLACK_TURN){
-		    pieces[name-1]->pick();
-		    selected_piece = pieces[name-1];
-	    }*/
         if(name == 165){
             move_pressed = true;
             break;
@@ -187,24 +172,21 @@ void list_hits(GLint hits, GLuint *names){
         if(name >= 101){
             name -= 100;
             grid_row = 9-(name%8);
-            if(grid_row == 9){
+            if(grid_row == 9)
                 grid_row = 1;
-            }
             grid_col = ceil((float)name/8.0f);
             grid_column = column[grid_col-1];
             printf("row = %i col = %i name = %i\n",grid_row,grid_col,name);
         }
     }
     if(move_pressed){
-        if((grid_pieces[grid_row-1][grid_col-1] == BLACK && gamestate == WHITE_TURN) || (grid_pieces[grid_row-1][grid_col-1] == WHITE && gamestate == BLACK_TURN)){
-            remove_piece(grid_col,grid_row);
-        }
+        if((grid_pieces[grid_row-1][grid_col-1] == BLACK && gamestate == WHITE_TURN) || (grid_pieces[grid_row-1][grid_col-1] == WHITE && gamestate == BLACK_TURN)) //if the possible move is a capture move
+            remove_piece(grid_col,grid_row); //... then remove the piece that's eaten
         selected_piece->move((unsigned int)grid_col,(unsigned int)grid_row);
         swap_turns();
         clearMovesList();
         selected_piece->unpick();
     }
-    printf("position = %c%i\n",grid_column,grid_row);
     pickPiece(grid_col,grid_row);
 }
 
@@ -253,7 +235,7 @@ void mouse(int button, int state, int x, int y){
 int main(int argc, char **argv){
 
     glutInit(&argc,argv);
-    glutInitWindowPosition(-1,-1);
+    glutInitWindowPosition(-1,-1); //starts at the default position
     glutInitWindowSize(screen_width,screen_height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glutInitContextVersion(2, 1);
@@ -264,8 +246,7 @@ int main(int argc, char **argv){
     initGL();
     initDLs();
     loadPieces();
-    //setShaders();
-    gamestate = WHITE_TURN;
+    gamestate = WHITE_TURN; //white starts first
 
     glClearColor(0.8, 0.8, 0.8, 1);
     glutDisplayFunc(draw);
