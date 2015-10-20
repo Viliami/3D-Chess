@@ -437,7 +437,6 @@ void Pawn::check_promotion(void){
         temp = new Queen("data/models/queen.dae","data/textures/white_queen.jpg",2,c_Column,c_Row);
         pieces.at(index) = temp;
     }
-    printf("promoted\n");
 }
 
 void Piece::move(unsigned int col, unsigned int row){
@@ -491,14 +490,12 @@ void Piece::move(char col, unsigned int row){
 void King::move(unsigned int col, unsigned int row){
     grid_pieces[c_Row-1][c_Col-1] = 0;
     if(c_Col-col == 2){
-        printf("castling to the left\n");
         if(color == WHITE){
             piece_at(1,1)->move((unsigned int)4,(unsigned int)1);
         }else if(color == BLACK){
             piece_at(1,8)->move((unsigned int)4,(unsigned int)8);
         }
     }else if(c_Col-col == -2){
-        printf("castling to the right\n");
         if(color == WHITE){
             piece_at(8,1)->move((unsigned int)6,(unsigned int)1);
         }else if(color == BLACK){
