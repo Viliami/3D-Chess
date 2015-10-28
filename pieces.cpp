@@ -223,6 +223,10 @@ void highlight_tile(int col, int row,unsigned int tile, bool captured_mode = fal
     }
 }
 
+void highlight_tile_k(int col, int row,unsigned int tile, bool captured_mode = false){
+    highlight_tile(col, row, tile, captured_mode);
+}
+
 void Piece::pick(void){
     picked = true;
     listMoves();
@@ -340,14 +344,14 @@ void Rook::listMoves(void){
 
 void King::listMoves(void){
     clearMovesList();
-    highlight_tile(c_Col+1,c_Row,0);
-    highlight_tile(c_Col-1,c_Row,1);
-    highlight_tile(c_Col,c_Row+1,2);
-    highlight_tile(c_Col,c_Row-1,3);
-    highlight_tile(c_Col+1,c_Row+1,4);
-    highlight_tile(c_Col+1,c_Row-1,5);
-    highlight_tile(c_Col-1,c_Row+1,6);
-    highlight_tile(c_Col-1,c_Row-1,7);
+    highlight_tile_k(c_Col+1,c_Row,0);
+    highlight_tile_k(c_Col-1,c_Row,1);
+    highlight_tile_k(c_Col,c_Row+1,2);
+    highlight_tile_k(c_Col,c_Row-1,3);
+    highlight_tile_k(c_Col+1,c_Row+1,4);
+    highlight_tile_k(c_Col+1,c_Row-1,5);
+    highlight_tile_k(c_Col-1,c_Row+1,6);
+    highlight_tile_k(c_Col-1,c_Row-1,7);
     if(!has_moved){
         if(!checkSquare(c_Col-3,c_Row) && !checkSquare(c_Col-2,c_Row) && !checkSquare(c_Col-1,c_Row)){
             highlight_tile(c_Col-2,c_Row,8);

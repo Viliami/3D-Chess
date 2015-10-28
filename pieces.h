@@ -2,11 +2,6 @@
 #include <GL/freeglut.h>
 #include "textfile.h"
 #include "loaders.h"
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <SOIL/SOIL.h>
-#include <iostream>
 #include <vector>
 #include <algorithm>
 
