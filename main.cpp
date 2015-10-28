@@ -58,16 +58,16 @@ void drawPieces(){
     for(int j = 0; j < side_pieces.size(); j++){ //draw dead pieces on the side
         Piece* temp = side_pieces.at(j);
         if(temp->color == BLACK){
-            if(black_counter <= 7){
+            if(black_counter <= 7){	//front row
                 temp->draw(true, -11.3, 8-(2*black_counter));
-            }else{
+            }else{			//back row
                 temp->draw(true, -13.3, 8-(2*(black_counter-8)));
             }
             black_counter++;
         }else if(temp->color == WHITE){
-            if(white_counter <= 7){
+            if(white_counter <= 7){	//front row
                 temp->draw(true, 11.2, 8-(2*white_counter));
-            }else{
+            }else{			//back row
                 temp->draw(true, 13.2, 8-(2*(white_counter-8)));
             }
             white_counter++;
