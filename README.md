@@ -30,10 +30,7 @@ g++ main.cpp pieces.cpp textfile.cpp -lGL -lGLU -lglut -lGLEW -lassimp -lSOIL -w
 sudo apt-add repository universe
 sudo apt-get update
 
-sudo apt-get install freeglut3-dev
-sudo apt-get install libglew1.6-dev
-sudo apt-get install libassimp-dev
-sudo apt-get install libsoil-dev
+sudo apt-get install freeglut3-dev libglew1.6-dev libassimp-dev libsoil-dev
 ```
 
 ###3D models
